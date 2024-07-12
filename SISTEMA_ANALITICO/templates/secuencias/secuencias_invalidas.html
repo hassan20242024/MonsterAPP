@@ -1,0 +1,223 @@
+{% extends "partial/body.html" %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% block contenido %}
+{% load bootstrap5 %}
+{% load static %}
+{% include "partial/header_gestion_secuencias.html" %}
+
+<!-- Input Material -->
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<!-- Input Material -->
+
+<div class="contenido">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                      <br>
+                             <div class="text-right">
+                  <div class="input-group rounded">
+                      <input type="search" id="myInput" class="numberinput gj-textbox-md" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon" />
+                     
+                    </div>
+              </div>
+                        </div>
+                        <div class="col-md-6">
+                          <br>
+                            <!--  
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                              <a href="{% url 'crear_secuencias' %}" class="btn btn-primary" style="background:#486af3c7" data-bs-target="#crear_secuencias_en_curso" data-bs-toggle="modal"><span class="fa fa-plus-circle"></span>Nueva secuencia</a>
+                              </div>
+                                --->
+                    </div>
+                    </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered display" id="example3">
+                    <thead>
+                        <tr class=" all text-center">
+                            <th class="all text-center" >Fecha/Hora Inicio</th>
+                            <th class="all text-center">Secuencia</th>
+                            <th class="all text-center">Sistema</th>
+                            <th class="all text-center">Protocolo</th>
+                            <th class="all text-center">Parámetro</th>
+                            <th class="all text-center">Causa</th>
+                            <th class="text-center" >Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        {% for item in secuencias.all %}
+                        {% if item.status == "Invalida" %}
+                        <tr class="text-center">
+                            <td class="all text-center">{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.sistema}}</td>
+                        <td >{{item.protocolo}}</td>
+                        <td >{{item.parametro_sq}}</td>
+                        <td class="text-danger">{{item.invalidez}}</td>
+                        <td >
+                            <a href="{% url 'validar_secuencias' item.pk %}" class="btn btn-primary btn-circle all text-center" style="background:#486af3b8" data-bs-target="#validar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-thumbs-up">Validar</span></a>
+                        </td>
+                        </tr>
+                        
+        <!-- -Validar Modal Inicio -->
+         <div  data-bs-backdrop="static" data-backdrop="hidden" data-backdrop="false"  class="modal fade" id="validar_secuencias_{{ item.pk }}" tabindex="-1" aria-labelledby="modal_validar" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                  <div class="container">
+                   
+                  <div class="modal-body text-center" >
+                    <br>
+                    <i class='fa fa-question' style='font-size:70px;color: #1b3d70c2;'></i>                  <br>
+                    <br>
+                                      <h1 class="fst-italic">Desea validar?</h1>
+                                      <br>
+                                      <div class="container">
+                                        <h5 class="fst-italic ">Por favor, registre fecha y hora de finalización de secuencia</h5>
+                                      </div>
+                                      <br>
+                                      <form  name="myFormValidar" action="{% url 'validar_secuencias' item.pk %}" onsubmit="return validateFormValidar()" method="POST">{% csrf_token %}
+                                         <!--USUARIO QUE VALIDA-->
+                                 <div style="display: none;">
+                                  <select name="validar" class="select form-control" value="" title="" required="" id="id_validar">
+                                  {% for item1 in validar.all %}
+                                <option value="{{item1.id}}" >{{user.username}}</option>
+                              {% endfor %}
+                              </select>
+                              </div>
+                               <!--USUARIO QUE VALIDA-->
+                                      <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS -->
+                                   <div style="display:none;">
+                                    <label  for="">Fecha de Invalidez</label>
+                                    <input  value="2024-01-01" type="" name="fecha_Invalidez" class="numberinput form-control gj-textbox-md" id="id_fecha_Invalidez" width="" data-datepicker="true">
+                                  </div>
+                                  <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS -->   
+                                              <!--FECHA_FINAL--> 
+                                      <input value="{{item.fecha_Final|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Final" class="numberinput form-control gj-textbox-md" id="datePickerId" width="" data-datepicker="true" min="{{item.fecha_Inicio|date:'Y-m-d H:i'}}" required max="{% now 'Y-m-d H:i' %}"> 
+                                    <br>
+                                        <!--FECHA_FINAL--> 
+                                          <!--FECHA_Y_HORA_INICIAL--> 
+                                          <div style="display: None;">
+                                            <input value="{{item.fecha_Inicio|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Inicio" class="numberinput form-control" id="fecha_Inicio" width="" data-datepicker="true" required>
+                                            <!--
+                                      <input value="{{item.hora_Inicio|time:'H:i'}}" type="time" name="hora_Inicio" class="numberinput form-control" id="hora_Inicio" width="" data-datepicker="true" required> 
+  
+                                            --> 
+                                          </div>
+                                          <!--FECHA_Y_HORA_INICIAL--> 
+  
+  
+                        
+                        <!--NOMBRE--> 
+                        <div id="div_id_nombre" class="mb-3" style="display: None;">
+                          <input type="text" name="nombre" maxlength="250" value="{{item.nombre}}" class="textinput form-control" id="id_nombre" required> 
+                        </div>         
+                           <!--NOMBRE-->
+                        <!--FECHA_IMPRESION REPORTE Y AUDITORIA--> 
+                 <input value="{{item.fecha_impresion|date:'Y-m-d H:i'}}" type="text" name="fecha_impresion" class="numberinput form-control gj-textbox-md " id="fecha_impresion" width="" data-datepicker="true" style="display: none;"> 
+                 <input value="{{item.fecha_reporte|date:'Y-m-d H:i'}}" type="text" name="fecha_reporte" class="numberinput form-control gj-textbox-md " id="fecha_reporte" width="" data-datepicker="true" style="display: none;" > 
+                 <input value="{{item.fecha_auditada|date:'Y-m-d H:i'}}" type="text" name="fecha_auditada" class="numberinput form-control gj-textbox-md " id="fecha_auditada" width="" data-datepicker="true" style="display: none;"> 
+                 <!--FECHA_IMPRESION REPORTE Y AUDITORIA-->    
+  
+                           <!--PROTOCOLO-->
+                           <div class="mb-3"  style="display: None;">
+                          
+                            <select name="protocolo" class="form-select" value="{{item.protocolo_id}}" title="" required="" id="id_protocolo">
+                            <option value="{{item.protocolo_id}}">{{item.protocolo}}</option>
+                            {% for item1 in protocolos.all %}
+                            <option value="{{item1.id}}">{{item1}}</option>
+                            {% endfor %}
+                          </select></div>
+                          <!--PROTOCOLO-->
+  
+                           <!--SISTEMA-->
+                           <div class="mb-3"   style="display: None;">
+                            <select name="sistema" class="form-select" value="{{item.sistema_id}}" title="" required="" id="id_sistema">
+                            <option value="{{item.sistema_id}}">{{item.sistema}}</option>
+                            {% for item1 in sistema.all %}
+                            <option value="{{item1.id}}">{{item1}}</option>
+                            {% endfor %}
+                          </select></div>
+                          <!--SISTEMA-->
+  
+                            <!--PARAMETRO-->
+                            <div class="mb-3"  style="display: None;">
+                              <select name="parametro_sq" class="form-select" value="{{item.parametro_sq_id}}" title="" required="" id="id_parametro_sq">
+                              <option value="{{item.parametro_sq_id}}">{{item.parametro_sq}}</option>
+                              {% for item1 in parametros.all %}
+                              <option value="{{item1.id}}">{{item1}}</option>
+                              {% endfor %}
+                            </select></div>
+                            <!--PARAMETRO-->
+  
+                            <!--OBSERVACIONES-->
+  
+                            <div id="div_id_observaciones" class="mb-3"  style="display: None;">
+                                  Observaciones<span class="asteriskField">*</span>
+                              </label>
+                      <textarea name="observaciones" value="{{item.observaciones}}" cols="40" rows="4" class="textarea form-control" required="" id="id_observaciones">
+                        {{item.observaciones}}
+                      </textarea>
+                      </div>
+                      <!--OBSERVACIONES-->
+  <div style="display: None;">
+    <textarea name="referencia" value="" cols="40" rows="2" class="numberinput form-control gj-textbox-md" id="id_referencia"></textarea>
+  
+  </div>
+                       <!--INVALIDEZ-->
+                                        <div class=""  style="display: none;" >
+                                          <select name="invalidez" class="form-control" value="{{item.invalidez_id}}" title=""  id="id_invalidez">
+                                          <option value="">-------</option>
+                                          {% for item1 in invalidez.all %}
+                                          <option value="{{item1.id}}">{{item1}}</option>
+                                          {% endfor %}
+                                        </select></div>
+                       <!--INVALIDEZ-->
+                      </div>
+                      <div class=" container-fluid text-center col-12 mx-auto">
+                        <button class="btn btn-primary btn-lg" style="background-color: #1b3d70c2;" type="submit">Si, validar</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">No, cancelar</button>
+                     <br>
+                     <br>
+                      </div>
+                  </form>
+                </div>
+                </div>
+              </div>
+            </div>
+          <!-- Validar Modal Final -->
+                        {% endif %}
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ <!--Data-table-->
+ <script>
+  new DataTable('#example3', {
+   searching:false,
+   "bPaginate": false,
+"bLengthChange": true,
+"bFilter": false,
+"bInfo": false,
+"bAutoWidth": false,
+"striped": false,
+  });
+</script>
+<!--Data-table-->
+
+
+
+
+
+
+
+{% endblock contenido %}
