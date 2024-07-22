@@ -11,7 +11,7 @@
 <script src="https://www.jqueryscript.net/demo/advanced-multiselect-easy/easySelect.js"></script>
   <div class="container-fluid">
     <div class="card-body"><br>
-      <h4 class="">Creación de protocolos</h4>
+      <h4 class="">Creación de protocolos de Proceso</h4>
     </div>
     
     <div class="row">
@@ -32,7 +32,7 @@
               {{ form.codigo|as_crispy_field  }}
               {{ form.nombre|as_crispy_field  }}
               {{ form.cliente|as_crispy_field  }}
-              {{ form.ensayo|as_crispy_field  }}
+              {{ form.ensayos|as_crispy_field  }}
               {{ form.celda|as_crispy_field  }}
               
           </div>
@@ -49,10 +49,10 @@
             </div>
           </div>
           <div class="card-body">
-            {{ form.metodologia|as_crispy_field  }}
-            {{ form.parametro|as_crispy_field  }}
+           
+          
             {{ form.Insumos_del_Proceso|as_crispy_field  }}
-            {{ form.estado_protocolo|as_crispy_field  }}
+            {{ form.estado_del_proceso|as_crispy_field  }}
             {{ form.observaciones|as_crispy_field  }}
           </div>
         </div>
@@ -60,7 +60,7 @@
      <div class="container-fluid">
       <div class="card">
         <div class="card-body">
-          {{ form.muestras_y_Placebos|as_crispy_field  }}
+          {{ form.muestras|as_crispy_field  }}
         </div>
   
        </div>
@@ -71,17 +71,13 @@
     </form>
       {% block scripts %}
       <script>
-        $("#id_muestras_y_Placebos").select2({
+        $("#id_ensayos").select2({
 theme: "bootstrap-5",
 placeholder: "Seleccione",
 
 
 });
-        $("#id_ensayo").select2({
-theme: "bootstrap-5",
-placeholder: "Seleccione",
-
-});
+       
 $("#id_cliente").select2({
 theme: "bootstrap-5",
 placeholder: "Seleccione",
@@ -89,14 +85,14 @@ placeholder: "Seleccione",
       </script>
 <script> 
 $(document).ready(function() {
-$('#id_parametro').css('width', '100%').multiselect(
+$('#id_muestras').css('width', '100%').multiselect(
 {
 enableFiltering: true,
 filterBehavior: 'text',
 buttonWidth: '100%',
 enableClickableOptGroups: true,
 enableCollapsibleOptGroups: true,
-nonSelectedText: 'Seleccionar Parametros',
+nonSelectedText: 'Seleccionar muestras',
 enableCaseInsensitiveFiltering: true,
 includeSelectAllOption: true,
 maxHeight: 300

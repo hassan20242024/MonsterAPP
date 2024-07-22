@@ -13,6 +13,8 @@ from .models import Muestras_y_Placebos
 from .models import Protocolos
 from .models import Cliente
 from .models import Celda
+from .models import Tipo_muestra
+from .models import Etapa
 
 
 #admin.site.site_header = "monsterApp"
@@ -78,5 +80,8 @@ admin.site.register(Muestras_y_Placebos, MuestrasAdmin)
 admin.site.register(Protocolos, ProtocolosAdmin)
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Celda, CeldaAdmin)
+admin.site.register(Tipo_muestra)
+admin.site.register(Etapa)
+
 
 

@@ -39,6 +39,7 @@ urlpatterns = [
     path("adm_inicio/", adm_inicio, name="adm_inicio"),
     path("", include("Aplicaciones.Protocolo_Metodos.urls")),
     path("", include("Aplicaciones.Secuencias.urls")),
+    path("", include("Aplicaciones.Protocolo_Muestras.urls")),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path("select2/", include("django_select2.urls")),
     path("", include("Aplicaciones.perfiles.urls")),

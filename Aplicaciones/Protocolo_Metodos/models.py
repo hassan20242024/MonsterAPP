@@ -8,6 +8,29 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class Tipo_muestra(models.Model):
+   
+    tipo_muestra=models.CharField(verbose_name="Tipo de muestra", max_length=90, unique=True)
+    class Condicion(models.TextChoices):
+        ACTIVO = "Activo", "ACTIVO"
+        PASIVO = "Pasivo", "PASIVO"
+    condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion")  
+   
+    def __str__(self):    
+
+        return(self.tipo_muestra) 
+    
+class Etapa(models.Model):
+   
+    nombre_etapa=models.CharField(verbose_name="Etapa", max_length=90, unique=True)
+    class Condicion(models.TextChoices):
+        ACTIVO = "Activo", "ACTIVO"
+        PASIVO = "Pasivo", "PASIVO"
+    condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion")  
+   
+    def __str__(self):    
+
+        return(self.nombre_etapa) 
 
 class Ensayo(models.Model):
    
@@ -121,6 +144,8 @@ class Viabilidad(models.Model):
 class Muestras_y_Placebos(models.Model):
     fecha_ingreso=models.DateField(verbose_name="Fecha de ingreso muestra", null=True, blank=False, help_text=u"AAAA/MM/DD")
     nombre_muestra=models.CharField(max_length=300, verbose_name="nombre de Muestra/Placebo/MP")
+    tipo_muestra=models.ForeignKey(to=Tipo_muestra, on_delete=models.CASCADE, verbose_name="Tipo de muestra", null=True, blank=False)
+    etapa=models.ForeignKey(to=Etapa, on_delete=models.CASCADE, verbose_name="Etapa", null=True, blank=False)
     codigo_muestra_interno=models.CharField(verbose_name="CIM / LIMS", max_length=90, unique=True)
     codigo_muestra_producto=models.CharField(verbose_name="Código de Producto", max_length=90)
     lote_muestra=models.CharField(verbose_name="Lote", max_length=90)
