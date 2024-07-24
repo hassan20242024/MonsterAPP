@@ -33,7 +33,7 @@
               {{ form.nombre|as_crispy_field  }}
               {{ form.cliente|as_crispy_field  }}
               {{ form.ensayos|as_crispy_field  }}
-              {{ form.celda|as_crispy_field  }}
+             
               
           </div>
         </div>
@@ -50,7 +50,7 @@
           </div>
           <div class="card-body">
            
-          
+            {{ form.celda|as_crispy_field  }}
             {{ form.Insumos_del_Proceso|as_crispy_field  }}
             {{ form.estado_del_proceso|as_crispy_field  }}
             {{ form.observaciones|as_crispy_field  }}
