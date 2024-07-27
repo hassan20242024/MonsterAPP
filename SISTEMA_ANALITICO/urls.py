@@ -19,13 +19,17 @@ from django.urls import path, include
 from SISTEMA_ANALITICO.views import inicio, inicioAdmin,adm_inicio
 from django.conf.urls import handler404
 from django.views.i18n import JavaScriptCatalog
+from django.conf import settings
+from django.conf.urls.static import static
 #from Aplicaciones.perfiles.views import SignUpView, BienvenidaView,SignInView,SignOutView
 #urlpatterns = patterns("", url(r"^admin/", include(admin.site.urls)),)
 
 
 
 
-
+urlpatterns = [
+    ...
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 urlpatterns = [

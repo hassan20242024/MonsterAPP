@@ -182,12 +182,12 @@ DATE_INPUT_FORMATS = ['%d-%B-%Y']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-os.path.join(BASE_DIR, "static")
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
-STATIC_ROOT = 'static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 #SIMPLE_AUTOCOMPLETE = {'auth.user': {'search_field': 'username'}}
 
@@ -375,3 +375,4 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
