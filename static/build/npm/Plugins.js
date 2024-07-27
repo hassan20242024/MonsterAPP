@@ -38,10 +38,10 @@ const Plugins = [
     to  : 'plugins/chart.js'
   },
   // jQuery UI
-  {
-    from: 'node_modules/jquery-ui-dist/',
-    to  : 'plugins/jquery-ui'
-  },
+  //{
+    //from: 'node_modules/jquery-ui-dist/',
+    //to  : 'plugins/jquery-ui'
+  //},
   // Flot
   {
     from: 'node_modules/flot/dist/es5/',
