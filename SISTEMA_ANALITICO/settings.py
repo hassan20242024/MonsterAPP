@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-5o95fv@r=-mat=@24fba40ptmt5z%51(-y^$am_-dtl**#73z#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["139.177.204.185", "MonsterAPP.com"]
-#ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
+#ALLOWED_HOSTS = ["139.177.204.185"]
+ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -182,12 +182,12 @@ DATE_INPUT_FORMATS = ['%d-%B-%Y']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+os.path.join(BASE_DIR, "static")
+]
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATIC_ROOT = "/static"
 
 #SIMPLE_AUTOCOMPLETE = {'auth.user': {'search_field': 'username'}}
 
@@ -375,4 +375,3 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
