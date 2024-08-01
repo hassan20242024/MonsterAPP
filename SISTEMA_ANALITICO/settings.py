@@ -112,7 +112,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "SISTEMA_ANALITICO.urls"
+ROOT_URLCONF = "MonsterAPP.urls"
 
 TEMPLATES = [
     {
