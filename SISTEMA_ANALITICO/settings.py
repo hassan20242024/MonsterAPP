@@ -198,7 +198,8 @@ STATICFILES_DIRS = [
 os.path.join(BASE_DIR, "static")
 ]
 
-STATIC_ROOT = "staticfiles/"
+#STATIC_ROOT = "staticfiles/"
+STATIC_ROOT = '/home/ubuntu/MonsterAPP/static'
 
 #SIMPLE_AUTOCOMPLETE = {'auth.user': {'search_field': 'username'}}
 
