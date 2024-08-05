@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-5o95fv@r=-mat=@24fba40ptmt5z%51(-y^$am_-dtl**#73z#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["3.15.221.138", "localhost"]
 #ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
@@ -132,7 +132,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "SISTEMA_ANALITICO.wsgi.application"
+#WSGI_APPLICATION = "SISTEMA_ANALITICO.wsgi.application"
 
 
 # Database
