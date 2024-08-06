@@ -26,6 +26,25 @@ SECRET_KEY = "django-insecure-5o95fv@r=-mat=@24fba40ptmt5z%51(-y^$am_-dtl**#73z#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+# security.W016
+CSRF_COOKIE_SECURE = True
+
+# security.W012
+SESSION_COOKIE_SECURE = True
+
+# security.W008
+SECURE_SSL_REDIRECT = True
+
+# security.W004
+SECURE_HSTS_SECONDS = 31536000 # One year in seconds
+
+# Another security settings
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# security.W022
+# I think it won't be needed. Because there are many ways.
 
 ALLOWED_HOSTS = ["3.15.221.138", "localhost"]
 #ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
