@@ -132,7 +132,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "SISTEMA_ANALITICO.wsgi.application"
+#WSGI_APPLICATION = "SISTEMA_ANALITICO.wsgi.application"
 
 
 # Database
