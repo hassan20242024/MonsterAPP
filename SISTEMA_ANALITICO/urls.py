@@ -23,10 +23,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 #from Aplicaciones.perfiles.views import SignUpView, BienvenidaView,SignInView,SignOutView
 #urlpatterns = patterns("", url(r"^admin/", include(admin.site.urls)),)
-#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
+urlpatterns = [
 
+] + staticfiles_urlpatterns()
+
+urlpatterns = [
+    
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 urlpatterns = [
@@ -44,10 +50,16 @@ urlpatterns = [
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path("select2/", include("django_select2.urls")),
     path("", include("Aplicaciones.perfiles.urls")),
+
+
+
+ 
+
+    #path("incia-sesion/", SignOutView.as_view(), name="inicio-sign_out"),
+
     
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT )
+]
 
 
     
