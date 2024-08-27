@@ -177,6 +177,43 @@
                                           {% endfor %}
                                         </select></div>
                        <!--INVALIDEZ-->
+                        <!--PROTOCOLO PROCESO-->
+                      
+                  <div class="form-group numberinput form-control gj-textbox-md" style="display: None;" >
+                    <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                      <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                      {% for item1 in protocolo_proceso.all %}
+                      {% if item1.estado_del_proceso.id == 1 or 7 and item1.condicion == "Activo"  %}
+                      <option value="{{item1.id}}">{{item1}}</option>
+                      {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div><br>
+                <!--PROTOCOLO PROCESO-->  
+<!--METODO-->
+                            
+                             <div class="form-group numberinput form-control gj-textbox-md" style="display: None;" >
+                               <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                                 <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                                 {% for item1 in metodo.all %}
+                              
+                                 <option value="{{item1.id}}">{{item1}}</option>
+                               
+                                 {% endfor %}
+                               </select>
+                             </div>
+               <!--METODO-->    
+<!--MUESTRA PROCESO -->
+                    
+                    <div class="form-group numberinput form-control gj-textbox-md" style="display: None;">
+                    <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                      <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                      {% for item1 in muestras.all %}
+                      <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                  <!--MUESTRA PROCESO -->    
                       </div>
                       <div class=" container-fluid text-center col-12 mx-auto">
                         <button class="btn btn-primary btn-lg" style="background-color: #1b3d70c2;" type="submit">Si, validar</button>

@@ -35,7 +35,7 @@ class secuenciasForm(forms.ModelForm):
     class Meta:
         model=Secuencias
         fields = '__all__'
-        exclude=["condicion," ] 
+        exclude=["condicion"] 
 
     #def clean_observaciones(self):
         #cleaned_data = super(secuenciasForm, self).clean()

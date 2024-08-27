@@ -21,6 +21,8 @@ class SistemaAdmin(admin.ModelAdmin):
     
     list_display = ["id", "nombre"]
 
+
+
   
 
 admin.site.register(Secuencias,SecuenciasAdmin)

@@ -49,8 +49,10 @@
             </div>
           </div>
           <div class="card-body">
-           
+            
+            {{ form.metodologia|as_crispy_field  }}
             {{ form.celda|as_crispy_field  }}
+            {{ form.metodo|as_crispy_field  }}
             {{ form.Insumos_del_Proceso|as_crispy_field  }}
             {{ form.estado_del_proceso|as_crispy_field  }}
             {{ form.observaciones|as_crispy_field  }}
@@ -66,7 +68,10 @@
        </div>
      </div>
     
-        <div class=""><input type="submit"  onclick='confirmar(event)' name='reservar' id='reservar' style="background-color: #1b3d70c2;"  value="GUARDAR" class="btn btn-dark btn-block" /></div>
+        <div class=""><input type="submit"  onclick='confirmar(event)' name='reservar' id='reservar' style="background-color: #1b3d70c2;"  value="GUARDAR" class="btn btn-dark btn-block" /></div><br> <br>
+        <div><a href="{% url 'adm_inicio' %}" onclick='salir(event)' class="btn btn-dark btn-block" style="background-color: #7d848ec2;" >CANCELAR</a>
+        </div>
+
       </div>
     </form>
       {% block scripts %}
@@ -124,6 +129,29 @@ maxHeight: 300
     })
 }
 </script>
+<script>
+  function salir(event) { 
+    
+    event.preventDefault();
+    Swal.fire({
+  title: "Desea salir?",
+  text: "Tu información no será guardada!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Confirmar",
+  cancelButtonText: "Cancelar"
+}).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/adm_inicio'
+        }
+    })
+}
+</script>
+
+
+
   <!-- validacion de campos-->
 
 <!--

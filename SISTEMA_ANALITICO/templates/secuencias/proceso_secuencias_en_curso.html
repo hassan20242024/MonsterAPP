@@ -38,11 +38,12 @@
             <div class="card-body">
                 <table class="table  table-bordered " id="example3">  <thead class="" >
                     <tr class="text-center">
-                        <th class="all text-center" >Fecha/Hora Inicio</th>
+                        <th class="all text-center" style="display: None;">Fecha/Hora Inicio</th>
                         <th class="text-center">Secuencia</th>
                         <th class="text-center">Sistema</th>
-                        <th class="text-center">Protocolo</th>
+                        <th class="text-center">Protocolo/Método</th>
                         <th class="text-center">Parámetro</th>
+                        <th class="text-center">Muestras</th>
                         <th class="text-center">Status</th>
                         <th class="all text-center" >Acciones</th>
                     </tr>
@@ -51,11 +52,29 @@
                     {% for item in secuenicas.all %}
                     {% if item.status == "Revisada" or item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" %}
                     <tr class="text-center">
-                        <td class="all text-center" >{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
-                        <td> <a href="" class=""  data-bs-target="#observacion_secuencia{{ item.pk }}" data-bs-toggle="modal">{{item.nombre}}</a></td>
+                        <td class="all text-center" style="display: None;" >{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
+                        <td>{{item.nombre}} &nbsp; <a href="" title="Revisar secuencia" class="text-black text-center"  data-bs-target="#observacion_secuencia{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-camera-retro" ></span></a>
+                        </td>
                         <td>{{item.sistema}}</td>
-                        <td >{{item.protocolo}}</td>
+                        <td >{% if item.protocolo.id > 67 %}
+                          {{item.protocolo}}
+                          {% endif %}
+                          {% if item.protocolo_proceso.id > 9 %}
+                          {{item.protocolo_proceso}}
+                          {% endif %}
+                          {% if item.metodo.id > 2 %}
+                          {{item.metodo}}
+                          {% endif %}</td>
                         <td >{{item.parametro_sq}}</td>
+                        <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 16 %}
+                          {% for p in item.protocolo.muestras_y_Placebos.all %}
+                            Código: {{p.codigo_muestra_producto}}. 
+                            <div class="accordian-body collapse" id="demo1"> {{p.nombre_muestra}} {{p.lote_muestra}}</div>{% endfor %}
+                          {% else %}
+                          <div class="accordian-body collapse" id="demo1"> {{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.codigo_muestra_producto}} </div>Etapa: {{item.muestras.etapa}}
+                          
+                          {% endif %}
+                        </td>
                         <td>                          
                           {% if item.status == "Revisada" %} <div class="badge bg-danger text-white rounded-pill">Pendiente</div>{% endif %}
                           {% if item.status == "Impresa" %} <div class="badge bg-warning  rounded-pill">Impresa</div>{% endif %}
@@ -145,7 +164,21 @@
                     <option value="{{item.parametro_sq_id}}">{{item.parametro_sq}}</option>
                   </select>
                   <textarea name="observaciones" value="{{item.observaciones}}" cols="40" rows="5" class="numberinput form-control gj-textbox-md" required="" id="id_observaciones">{{item.observaciones}}</textarea>
-                      
+                   <!--PROTOCOLO PROCESO-->
+                    <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                      <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                    </select>
+                <!--PROTOCOLO PROCESO-->  
+                <!--METODO-->
+                    <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                    <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                    </select>
+               <!--METODO-->    
+               <!--MUESTRA PROCESO -->
+                    <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                    <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                  </select>
+                 <!--MUESTRA PROCESO -->    
                   </div>
                       </div>
                       <div class=" container-fluid text-center col-12 mx-auto">
@@ -276,6 +309,21 @@
                                             <option value="{{item.parametro_sq_id}}">{{item.parametro_sq}}</option>
                                           </select>
                                           <textarea name="observaciones" value="{{item.observaciones}}" cols="40" rows="5" class="numberinput form-control gj-textbox-md" required="" id="id_observaciones">{{item.observaciones}}</textarea>
+                                           <!--PROTOCOLO PROCESO-->
+                    <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                      <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                    </select>
+                <!--PROTOCOLO PROCESO-->  
+                <!--METODO-->
+                    <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                    <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                    </select>
+               <!--METODO-->    
+               <!--MUESTRA PROCESO -->
+                    <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                    <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                  </select>
+                 <!--MUESTRA PROCESO -->   
                                               
                                           </div>
                                     </div>
@@ -325,13 +373,13 @@
     <!--FECHA_AUDITORIA INICIO--> 
    
     <input value="{{item.fecha_auditada|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_auditada" class="numberinput form-control gj-textbox-md " id="fecha_auditada" width="" data-datepicker="true" style="display: none;"> 
-  <br>
+  <br> <!--FECHA_AUDITORIA FIN--> 
        <!--FECHA_VALIDACION--> 
        <input value="{{item.fecha_validar|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_validar" class="numberinput form-control gj-textbox-md " id="fecha_validar" width="" data-datepicker="true" style="display: none;"> 
        <br>
      <!--FECHA_VALIDACION-->  
  
-   <!--FECHA_AUDITORIA FIN--> 
+  
 
 <!--USUARIO AUDITORIA INICIO-->
 
@@ -415,6 +463,21 @@
                     <option value="{{item.parametro_sq_id}}">{{item.parametro_sq}}</option>
                   </select>
                   <textarea name="observaciones" value="{{item.observaciones}}" cols="40" rows="5" class="numberinput form-control gj-textbox-md" required="" id="id_observaciones">{{item.observaciones}}</textarea>
+                   <!--PROTOCOLO PROCESO-->
+                   <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                    <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                  </select>
+              <!--PROTOCOLO PROCESO-->  
+              <!--METODO-->
+                  <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                  <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                  </select>
+             <!--METODO-->    
+             <!--MUESTRA PROCESO -->
+                  <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                  <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                </select>
+               <!--MUESTRA PROCESO -->   
                       
                   
             </div>
@@ -446,6 +509,8 @@
 <!-- ------------AUDITAR Modal FIN --> 
 
 </tr>
+<!--                  OPCIONES PARA EDITAR SECUENCIAS VALIDADAS Y REVISAR INICIO--------------------------->
+
 <!-- --------OBSERVACION Modal Inicio ---------------------------------------------->
      <div   data-backdrop="hidden" data-backdrop="false"  class="modal fade" id="observacion_secuencia{{ item.pk }}" tabindex="-1" aria-labelledby="modal_validar" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -470,7 +535,15 @@
                     <b class="">Sistema usado</b> <a class="float-right">{{item.sistema}}</a>
                     </li>
                     <li class="list-group-item">
-                    <b>Código protocolo</b> <a class="float-right">{{item.protocolo}}</a>
+                    <b>Código protocolo/método</b> <a class="float-right">{% if item.protocolo.id > 67 %}
+                      {{item.protocolo}}
+                      {% endif %}
+                      {% if item.protocolo_proceso.id > 9 %}
+                      {{item.protocolo_proceso}}
+                      {% endif %}
+                      {% if item.metodo.id > 2 %}
+                      {{item.metodo}}
+                      {% endif %}</a>
                     </li>
                   </li>
                   <li class="list-group-item">
@@ -510,17 +583,22 @@
                         {% if item.status == "Reportada" or item.status == "Auditada" %} 
                         <li class="list-group-item">
                           <b>Reportada por/fecha</b> <a class="float-right">{{item.reportar}}/{{item.fecha_reporte}}</a>
-                          {% endif %}
+                          <li class="list-group-item">
+                            <b>Referencia del reporte</b> <a class="float-right">{{item.referencia}}</a>
                           </li>
+                          {% endif %}
                           {% if item.status  == "Auditada" %}
                           <li class="list-group-item">
                             <b>Auditada por/fecha</b> <a class="float-right">{{item.auditar}}/{{item.fecha_auditada}}</a>
                             {% endif %}
                             </li>
                             <li class="list-group-item">
-                              <b>Observaciones</b> <a class="float-right">{{item.observaciones}}</a>
-                                                            </li>
-
+                              <b>Observaciones</b>   
+                             
+                              {% if item.status == "Reportada" or item.status == "Impresa" or item.status == "Revisada" %}
+                              <a href="{% url 'actualizar_secuencias_validadas' item.pk %}" title="Detalles de secuencia" ><span class="fa fa-plus-circle" ></span></a>{% endif %}
+                               <a class="float-right">{{item.observaciones}}</a>
+                                                            </li> 
                 </div>
 
             
@@ -530,9 +608,13 @@
 
                           </div>
                           <div class="card-body">
+                            {% if item.muestras.id == 16 %}
                             {% for p in item.protocolo.muestras_y_Placebos.all %}
                             <li class="list-group" >{{p}}.</li>
                             {% endfor %}
+                            {% else %}
+                            <li class="list-group" >{{item.muestras}}.</li>
+                            {% endif %}
                             
 
                           </div>
@@ -555,7 +637,8 @@
           </div>
         </div>
 <!-- --------OBSERVACION Modal Fin -------------------------------------------------------------------------->
-    
+
+ <!--                  OPCIONES PARA EDITAR SECUENCIAS VALIDADAS Y REVISAR INICIO--------------------------->   
   {% endif %}
   {% endfor %}
                 </tbody>

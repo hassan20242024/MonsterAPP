@@ -56,14 +56,7 @@
                 <p>Crear Protocolos</p>
               </a>
             </li>
-            {% if perms.auth.view_user %}
-            <li class="nav-item">
-              <a href="{% url 'configuracion_protocolo_metodos' %}" class="nav-link">
-                <i class="fas fa-cogs"></i>
-                <p>Configuración Protoclos</p>
-              </a>
-            </li>
-            {% endif %}
+           
          </ul>
     
 
@@ -91,15 +84,15 @@
           <ul class="nav nav-treeview">
             <li class="nav-item">
               
-              <a href="#" class="nav-link">
+              <a href="{% url 'protocolo_proceso' %}" class="nav-link">
                 <i class="far fa-eye"></i>
-                <p>Ver Protocolos</p>
+                <p>Ver Protocolos de Proceso</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{% url 'crear_protocolo_proceso' %}" class="nav-link">
                 <i class="fa fa-plus"></i>
-                <p>Crear Protocolos</p>
+                <p>Crear Protocolos de Proceso</p>
               </a>
             </li>
             {% if perms.auth.view_user %}
@@ -111,6 +104,16 @@
             </li>
             {% endif %}
          </ul>
+
+         {% if user.is_authenticated and perms.auth.view_user %}
+         <li class="nav-item ">
+          <a href="{% url 'configuracion_protocolo_metodos' %}" class="nav-link">
+            <i class="fas fa-cogs"></i>
+
+             <p>Configuración Protoclos</p><br>
+           </a>
+         </li>{% endif %}
+        
     
 
       <li class="nav-header"><strong>LABORATORIO</strong></li>

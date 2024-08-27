@@ -24,7 +24,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>{{registro_total_protocolo_metodos}}</h3>
+            <h3>{{registro_total_protocolo_metodos_reales}}</h3>
 
             <p>Protocolo de Métodos</p>
           </div>
@@ -39,14 +39,13 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>0<sup style="font-size: 20px"></sup></h3>
-
+            <h3>{{registro_total_protocolo_proceso_reales}}</h3>
             <p>Protocolos de Proceso</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url 'protocolo_proceso' %}" class="small-box-footer">Mas información  <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -61,7 +60,7 @@
           <div class="icon">
             <i class="ion ion-person-add"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="#" class="small-box-footer">Mas información  <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -77,7 +76,7 @@
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="#" class="small-box-footer">Mas información  <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -92,7 +91,7 @@
           <div class="card-header bg-gradient-info">
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
-              Protocolos Finalizados
+              Protocolos de Métodos Finalizados
             </h3>
        
           </div><!-- /.card-header -->
@@ -115,7 +114,7 @@
           <div class="card-header bg-gradient-info">
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
-              Estado de Protocolos
+              Estado de Protocolos de Métodos
             </h3>
 
           </div>
@@ -134,6 +133,55 @@
       <!-- right col -->
     </div>
     <!-- /.row (main row) -->
+    <div class="row">
+      <!-- Left col -->
+      <section class="col-lg-6 connectedSortable">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+          <div class="card-header bg-gradient-info">
+            <h3 class="card-title">
+              <i class="fas fa-chart-pie mr-1"></i>
+              Protocolos de Proceso Finalizados
+            </h3>
+       
+          </div><!-- /.card-header -->
+          <div class="card-body" id="containerPr">
+           
+          </div><!-- /.card-body -->
+        </div>
+
+      </section>
+      <!-- /.Left col -->
+      <!-- right col (We are only adding the ID to make the widgets sortable)-->
+      <section class="col-lg-6 connectedSortable">
+
+        <!-- Map card -->
+      
+        <!-- /.card -->
+
+        <!-- solid sales graph -->
+        <div class="card bg-gradient-white">
+          <div class="card-header bg-gradient-info">
+            <h3 class="card-title">
+              <i class="fas fa-chart-pie mr-1"></i>
+              Estado de Protocolos de Proceso
+            </h3>
+
+          </div>
+          <div class="card-body" id="containersPr">
+          </div>
+          <!-- /.card-body -->
+
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+
+        <!-- Calendar -->
+   
+        <!-- /.card -->
+      </section>
+      <!-- right col -->
+    </div>
   </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
@@ -148,13 +196,9 @@
 <script type="">
     Highcharts.chart('containers', {{ chart2|safe }});
   </script>
-<!--
   <script type="">
-    Highcharts.chart('container', {{ chart|safe }});
+    Highcharts.chart('containersPr', {{ chart3|safe }});
   </script>
--->
-
-
 
 
 <script type="">
@@ -184,6 +228,34 @@ Highcharts.chart('container', {
       
   });
 </script>
+
+<script type="">
+  Highcharts.chart('containerPr', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+  
+            
+              {% for entry in datasetPr %} "{{ entry.fecha_final__month | month_name }}" {% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        },
+        series: [{
+            name: 'Finalizado',
+            data: [
+              {% for entry in datasetPr %}{{ entry.Finalizado }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            colorByPoint: 'true',
+            showInLegen:"false"
+        }, 
+      ]
+        
+    });
+  </script>
   {% endblock %}
   {% else %}
 <!-- Inicia sesión -->

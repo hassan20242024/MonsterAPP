@@ -33,6 +33,19 @@ class Ensayo(models.Model):
     def __str__(self):    
 
         return(self.nombre_ensayo) 
+    
+class Metodo(models.Model):
+    codigo_metodo=models.CharField(verbose_name="Método (código)", max_length=90, unique=True)
+    nombre_metodo=models.CharField(verbose_name="Método (Nombre)", max_length=90, unique=True)
+    class Condicion(models.TextChoices):
+        ACTIVO = "Activo", "ACTIVO"
+        PASIVO = "Pasivo", "PASIVO"
+    condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion")  
+   
+    def __str__(self):    
+
+        return(self.codigo_metodo)     
+    
 class Etapa(models.Model):
    
     nombre_etapa=models.CharField(verbose_name="Etapa", max_length=90, unique=True)
@@ -195,6 +208,7 @@ class Protocolos(models.Model):
      codigo=models.CharField(max_length=90, verbose_name="Código Protocolo", null=True, blank=False, unique=True)
      nombre=models.CharField(max_length=250, verbose_name="Título_del_Protocolo",  null=True, blank=False, unique=True)
      ensayo=models.ForeignKey(to=Ensayo, on_delete=models.CASCADE, verbose_name="Ensayo", null=True, blank=False)
+     metodo=models.ForeignKey(to=Metodo, on_delete=models.CASCADE, verbose_name="Metodo de referencia", null=True, blank=False)
      celda=models.ForeignKey(to=Celda, on_delete=models.CASCADE, verbose_name="Celda", null=True, blank=False)
      muestras_y_Placebos=models.ManyToManyField(Muestras_y_Placebos, blank=False)
      metodologia=models.ForeignKey(Metodologia, on_delete=models.CASCADE, verbose_name="metodologia", null=True, blank=False,  max_length=90)

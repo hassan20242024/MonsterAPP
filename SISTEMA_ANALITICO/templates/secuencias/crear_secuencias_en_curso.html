@@ -13,7 +13,9 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+
 <div class="contenido ">
+ 
         <div class="container-fluid">
         
                 <div class="">
@@ -41,11 +43,12 @@
                       <table class="table  table-bordered display" id="example3">
                         <thead class="" >
                             <tr class="">
-                                <th class="text-center">Fecha inicial</th>
+                                <th class="text-center" style="display: None;">Fecha inicial</th>
                                 <th class="text-center">Secuencia</th>
                                 <th class="text-center">Sistema</th>
-                                <th class="text-center">Protocolo</th>
+                                <th class="text-center">Protocolo/Método</th>
                                 <th class="text-center">Parámetro</th>
+                                <th class="text-center">Muestras</th>
                                 {% if perms.Secuencias.view_usuario_impresion %}
                                 <th class="all text-center" >Acciones</th>
                                 {% endif %}
@@ -55,23 +58,58 @@
                             {% for item in secuenicas.all %}
                             {% if item.status == "Registrada" %}
 
-                            <tr class="text-center">
-                                <td class="text-center">{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
-                                <td>{{item.nombre}}</td>
+                            <tr>
+                              
+                                <td class="text-center" style="display: None;">{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
+                                <td >{{item.nombre}} </td>
                                 <td>{{item.sistema}}</td>
-                                <td >{{item.protocolo}}</td>
-                                <td >{{item.parametro_sq}}</td>
+                                <td >
+                                  {% if item.protocolo.id > 67 %}
+                                  {{item.protocolo}}
+                                  {% endif %}
+                                  {% if item.protocolo_proceso.id > 9 %}
+                                  {{item.protocolo_proceso}}
+                                  {% endif %}
+                                  {% if item.metodo.id > 2 %}
+                                  {{item.metodo}}
+                                  {% endif %}
+                                </td>
+                              
+                                <td> {% if item.parametro_sq.id == 25 %}
+                                  No Aplica
+                                  {% else %}
+                                  {{item.parametro_sq}}
+                                  <a href="{% url 'duplicar_secuencias' item.pk %}" title="Agregar nuevo parámetro" class=" text-center"  data-bs-target="#duplicar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
+                                  {% endif %}
+                                </td>
+                                <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 16 %}
+                                  No Aplica
+                                  {% else %}
+                                  <div class="accordian-body collapse" id="demo1"> {{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.codigo_muestra_producto}} </div>Etapa: {{item.muestras.etapa}}
+                                  <a href="{% url 'duplicar_secuencias_muestras' item.pk %}" title="Agregar nuevo parámetro" class="text-center"  data-bs-target="#duplicar_secuencias_muestras_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
+                                  {% endif %}
+                                </td>
+                                
                                 {% if perms.Secuencias.view_usuario_impresion %}
                                 <td>
+                                 
                                 
                                     <a href="{% url 'validar_secuencias' item.pk %}"  title="Validar" class="btn btn-primary btn-circle text-center" style="background:#486af3b8" data-bs-target="#validar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-thumbs-up"></span></a>
                                     <a href="{% url 'invalidar_secuencias' item.pk %}" title="Invalidar" class="btn btn-danger btn-circle" style="background:#ec1717b4"  data-bs-target="#invalidar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-thumbs-down"></span></a>
                                     <a href="{% url 'editar_secuencias_en_curso' item.pk %}" title="Editar" class="btn btn-info btn-circle text-center" style="background:#33acb578" id="" data-bs-target="#editar_secuencias_{{ item.pk }}" data-bs-toggle="modal" ><span class="fa fa-edit "></span></a>
-                                    <a href="{% url 'duplicar_secuencias' item.pk %}" title="Nuevo parámetro" class="btn btn-secondary btn-circle" style="background:#02175166" data-bs-target="#duplicar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class=" fa fa-plus-square"></span></a>
-                                   
+                                
                                   </td> {% endif %}
                             
                             </tr>
+                            <script>
+                              $('.accordian-body').on('show.bs.collapse', function () {
+    $(this).closest("table")
+        .find(".collapse.in")
+        .not(this)
+        .collapse('toggle')
+})
+                            </script>
+                            
                   
        <!-- -Invalidar Modal Inicio -->
         <div data-backdrop="hidden"  data-bs-backdrop="static" class="modal fade" id="invalidar_secuencias_{{ item.pk }}" tabindex="-1" aria-labelledby="modal_invalidar" aria-hidden="true">
@@ -158,7 +196,9 @@
                           {% for item1 in protocolos.all %}
                           <option value="{{item1.id}}">{{item1}}</option>
                           {% endfor %}
-                        </select></div>
+                        </select>
+
+                      </div>
                         <!--PROTOCOLO-->
 
                          <!--SISTEMA-->
@@ -201,6 +241,43 @@
                                         {% endfor %}
                                       </select></div>
                      <!--INVALIDEZ-->
+                     <!--PROTOCOLO PROCESO-->
+                      
+                     <div class="form-group numberinput form-control gj-textbox-md" style="display: None;" >
+                      <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                        <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                        {% for item1 in protocolo_proceso.all %}
+                        {% if item1.estado_del_proceso.id == 1 or 7 and item1.condicion == "Activo"  %}
+                        <option value="{{item1.id}}">{{item1}}</option>
+                        {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div><br>
+                  <!--PROTOCOLO PROCESO-->  
+<!--METODO-->
+                              
+                               <div class="form-group numberinput form-control gj-textbox-md" style="display: None;">
+                                 <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                                   <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                                   {% for item1 in metodo.all %}
+                                
+                                   <option value="{{item1.id}}">{{item1}}</option>
+                                 
+                                   {% endfor %}
+                                 </select>
+                               </div>
+                 <!--METODO-->    
+<!--MUESTRA PROCESO -->
+                      
+                      <div class="form-group numberinput form-control gj-textbox-md" style="display: None;">
+                      <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                        <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                        {% for item1 in muestras.all %}
+                        <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                    <!--MUESTRA PROCESO -->       
                     </div><br>
                     <div class=" container-fluid text-center col-12 mx-auto">
                       <button class="btn btn-danger btn-lg" style="background:#ec1717b4" type="submit">Si, invalidar</button>
@@ -324,6 +401,44 @@
                                         {% endfor %}
                                       </select></div>
                      <!--INVALIDEZ-->
+                  <!--PROTOCOLO PROCESO-->
+                      
+                  <div class="form-group numberinput form-control gj-textbox-md" style="display: None;" >
+                    <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                      <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                      {% for item1 in protocolo_proceso.all %}
+                      {% if item1.estado_del_proceso.id == 1 or 7 and item1.condicion == "Activo"  %}
+                      <option value="{{item1.id}}">{{item1}}</option>
+                      {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div><br>
+                <!--PROTOCOLO PROCESO-->  
+<!--METODO-->
+                            
+                             <div class="form-group numberinput form-control gj-textbox-md" style="display: None;" >
+                               <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                                 <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                                 {% for item1 in metodo.all %}
+                              
+                                 <option value="{{item1.id}}">{{item1}}</option>
+                               
+                                 {% endfor %}
+                               </select>
+                             </div>
+               <!--METODO-->    
+<!--MUESTRA PROCESO -->
+                    
+                    <div class="form-group numberinput form-control gj-textbox-md" style="display: None;">
+                    <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                      <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                      {% for item1 in muestras.all %}
+                      <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                  <!--MUESTRA PROCESO -->                                      
+
                     </div>
                     <div class=" container-fluid text-center col-12 mx-auto">
                       <button class="btn btn-primary btn-lg" style="background-color: #1b3d70c2;" type="submit">Si, validar</button>
@@ -338,7 +453,7 @@
           </div>
         <!-- Validar Modal Final -->
 
-        <!-- Duplicar Modal Inicio -->
+        <!-- Duplicar parametro Modal Inicio -->
         <div  data-bs-backdrop="static" data-backdrop="hidden" data-backdrop="false"  class="modal fade" id="duplicar_secuencias_{{ item.pk }}" tabindex="-1" aria-labelledby="modal_validar" aria-hidden="true">
           <div class="modal-dialog ">
               <div class="modal-content">
@@ -348,7 +463,7 @@
                   <br>
                   <i class='fa fa-question' style='font-size:70px;color: #1b3d70c2;'></i> <br>
                   <br>
-                                    <h1 class="fst-italic">Desea adicionar otro parámetro?</h1>
+                                    <h1 class="fst-italic">Desea agregar otro parámetro?</h1>
                                     <br>
                                     <div class="container">
                                       <h5 class="fst-italic ">Por favor, seleccione el parámetro:</h5>
@@ -422,9 +537,8 @@
                           {% endfor %}
                         </select></div>
                         <!--SISTEMA-->
-
+                    
                             <!--PARAMETRO-->
-                          
                             <div class="form-group numberinput form-control gj-textbox-md" >
                             <select style="display:none"  style="width: 100%;"  name="parametro_sq" class=" prueba form-control gj-textbox-md" value="{{item.parametro_sq_id}}" title="" required="" id="id_parametro_sq">
                             <option ></option>
@@ -458,9 +572,24 @@
                   
                                       
                      <!--INVALIDEZ-->
+                      <!--PROTOCOLO PROCESO-->
+                   <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                    <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                  </select>
+              <!--PROTOCOLO PROCESO-->  
+              <!--METODO-->
+                  <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                  <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                  </select>
+             <!--METODO-->    
+             <!--MUESTRA PROCESO -->
+                  <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                  <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                </select>
+               <!--MUESTRA PROCESO -->   
                     </div>
                     <div class=" container-fluid text-center col-12 mx-auto">
-                      <button class="btn btn-primary btn-lg" onclick=validator() style="background-color: #1b3d70c2;" type="submit">Si, duplicar</button>
+                      <button class="btn btn-primary btn-lg" onclick=validator() style="background-color: #1b3d70c2;" type="submit">Si, agregar</button>
                       <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">No, cancelar</button>
                    <br>
                    <br>
@@ -481,7 +610,172 @@
               </div>
             </div>
           </div>
-        <!-- Duplicar Modal FInal -->
+        <!-- Duplicar parametro Modal FInal -->
+
+                <!-- Duplicar muestras Modal Inicio -->
+                <div  data-bs-backdrop="static" data-backdrop="hidden" data-backdrop="false"  class="modal fade" id="duplicar_secuencias_muestras_{{ item.pk }}" tabindex="-1" aria-labelledby="modal_validar" aria-hidden="true">
+                  <div class="modal-dialog ">
+                      <div class="modal-content">
+                        <div class="container">
+                         
+                        <div class="modal-body text-center" >
+                          <br>
+                          <i class='fa fa-question' style='font-size:70px;color: #1b3d70c2;'></i> <br>
+                          <br>
+                                            <h1 class="fst-italic">Desea agregar otra muestra?</h1>
+                                            <br>
+                                            <div class="container">
+                                              <h5 class="fst-italic ">Por favor, seleccione la muestra:</h5>
+                                            </div>
+                                            <br>
+                                            <form action="{% url 'duplicar_secuencias_muestras' item.pk %}" method="POST">{% csrf_token %}
+                                            <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS -->
+                                           <div style="display:none;">
+                                              <label  for="">Fecha de Invalidez</label>
+                                              <input  value="2024-01-01" type="" name="fecha_Invalidez" class="numberinput form-control gj-textbox-md" id="id_fecha_Invalidez" width="" data-datepicker="true">
+                                            </div>
+                                            <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS --> 
+                              
+                                              <div class="row" style="display: None;">
+                                                
+                                                <div class="col-md-6">
+                                                    <!--FECHA_FINAL--> 
+                                            <input value="{{item.fecha_Final|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Final" class="numberinput form-control" id="fecha_Final" width="" data-datepicker="true"> 
+                                          <br>
+                                              <!--FECHA_FINAL--> 
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!--HORA_FINAL--> 
+                                           <!--
+                                             <input value="{{item.hora_Final|time:'H:i'}}" type="time" name="hora_Final" class="numberinput form-control" id="hora_Final" width="" data-datepicker="true"> 
+                                          <br>
+                                           -->
+                                              <!--HORA_FINAL--> 
+                                                </div>
+                                              </div>
+                                                <!--FECHA_Y_HORA_INICIAL--> 
+                                                <div style="display: None;">
+                                                  <input value="{{item.fecha_Inicio|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Inicio" class="numberinput form-control" id="fecha_Inicio" width="" data-datepicker="true" required>
+                                            <!--
+                                            <input value="{{item.hora_Inicio|time:'H:i'}}" type="time" name="hora_Inicio" class="numberinput form-control" id="hora_Inicio" width="" data-datepicker="true" required> 
+        
+                                            -->       
+                                                </div>
+                                                <!--FECHA_Y_HORA_INICIAL--> 
+        
+        
+                              
+                              <!--NOMBRE--> 
+                              <div id="div_id_nombre" class="mb-3" style="display: None;">
+                                <input type="text" name="nombre" maxlength="250" value="{{item.nombre}}" class="textinput form-control" id="id_nombre" required> 
+                              </div>         
+                                 <!--NOMBRE-->
+                              <!--FECHA_IMPRESION REPORTE Y AUDITORIA--> 
+                         <input value="{{item.fecha_impresion|date:'Y-m-d H:i'}}" type="text" name="fecha_impresion" class="numberinput form-control gj-textbox-md " id="fecha_impresion" width="" data-datepicker="true" style="display: none;"> 
+                         <input value="{{item.fecha_reporte|date:'Y-m-d H:i'}}" type="text" name="fecha_reporte" class="numberinput form-control gj-textbox-md " id="fecha_reporte" width="" data-datepicker="true" style="display: none;" > 
+                         <input value="{{item.fecha_auditada|date:'Y-m-d H:i'}}" type="text" name="fecha_auditada" class="numberinput form-control gj-textbox-md " id="fecha_auditada" width="" data-datepicker="true" style="display: none;"> 
+                         <!--FECHA_IMPRESION REPORTE Y AUDITORIA-->  
+        
+                                 <!--PROTOCOLO-->
+                                 <div class="mb-3"  style="display: None;">
+                                
+                                  <select name="protocolo" class="form-select" value="{{item.protocolo_id}}" title="" required="" id="id_protocolo">
+                                  <option value="{{item.protocolo_id}}">{{item.protocolo}}</option>
+                                  {% for item1 in protocolos.all %}
+                                  <option value="{{item1.id}}">{{item1}}</option>
+                                  {% endfor %}
+                                </select></div>
+                                <!--PROTOCOLO-->
+        
+                                 <!--SISTEMA-->
+                                 <div class="mb-3"   style="display: None;">
+                                  <select name="sistema" class="form-select" value="{{item.sistema_id}}" title="" required="" id="id_sistema">
+                                  <option value="{{item.sistema_id}}">{{item.sistema}}</option>
+                                  {% for item1 in sistema.all %}
+                                  <option value="{{item1.id}}">{{item1}}</option>
+                                  {% endfor %}
+                                </select></div>
+                                <!--SISTEMA-->
+                            
+                                    <!--PARAMETRO-->
+                                    <div style="display: none;" class="form-group numberinput form-control gj-textbox-md" >
+                                    <select style="display:none"  style="width: 100%;"  name="parametro_sq" class=" prueba form-control gj-textbox-md" value="{{item.parametro_sq_id}}" title="" required="" id="id_parametro_sq">
+                                    <option value="{{item.parametro_sq_id}}" >{{item.parametro_sq}}</option>
+                                    
+                                  </select>
+                                </div><br>
+                                  <!--PARAMETRO-->
+                                                <!--MUESTRA PROCESO -->
+                    
+                    <div class="form-group numberinput form-control gj-textbox-md">
+                    <select style="display: none;"  name="muestras" class=" prueba1 "  title="" required="" id="id_muestras">
+                      <option></option>
+                      {% for item1 in muestras.all %}
+                      <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                    {% endfor %}
+                  </select>
+                </div><br>
+                  <!--MUESTRA PROCESO -->
+                                 
+                             
+        
+                                  <!--OBSERVACIONES-->
+        
+                                  <div id="div_id_observaciones" class="mb-3"  style="display: None;">
+                                        Observaciones<span class="asteriskField">*</span>
+                                    </label>
+                            <textarea name="observaciones" value="{{item.observaciones}}" cols="40" rows="4" class="textarea form-control" required="" id="id_observaciones">
+                              {{item.observaciones}}
+                            </textarea>
+                            </div>
+                            <!--OBSERVACIONES-->
+        
+                             <!--INVALIDEZ-->
+                                              <div class=""  style="display: none;" >
+                                                <select name="invalidez" class="form-control" value="{{item.invalidez_id}}" title=""  id="id_invalidez">
+                                                <option value="">-------</option>
+                                                {% for item1 in invalidez.all %}
+                                                <option value="{{item1.id}}">{{item1}}</option>
+                                                {% endfor %}
+                                              </select></div>
+                          
+                                              
+                             <!--INVALIDEZ-->
+                              <!--PROTOCOLO PROCESO-->
+                           <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis">
+                            <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                          </select>
+                      <!--PROTOCOLO PROCESO-->  
+                      <!--METODO-->
+                          <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                          <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                          </select>
+                     <!--METODO-->    
+                     
+                            </div>
+                            <div class=" container-fluid text-center col-12 mx-auto">
+                              <button class="btn btn-primary btn-lg" onclick=validator() style="background-color: #1b3d70c2;" type="submit">Si, agregar</button>
+                              <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">No, cancelar</button>
+                           <br>
+                           <br>
+                            </div>
+                                <!--SCRIPTS INICIO PARA SELECT2-->
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                     <script>
+                     $('.prueba1').css('width', '100%').select2({
+                     theme: "classic",
+                     dropdownParent:$("#duplicar_secuencias_muestras_{{ item.pk}}"),
+                     });
+                     </script>
+                               <!--SCRIPTS FINAL PARA SELECT2-->
+                        </form>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- Duplicar muestras Modal FInal -->
 
  <!----------Formulario-Edicion Modal Inicio------------------------------------------ -->
          <div class="modal fade" data-bs-backdrop="static"  id="editar_secuencias_{{ item.pk }}" tabindex="-1" aria-labelledby="modal_parametros" aria-hidden="true">
@@ -492,14 +786,68 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForEdicion" name="myForEdicion" action="{% url 'editar_secuencias_en_curso' item.pk %}" method="POST"> {% csrf_token %}
+                    <form id="myFormEdicion" name="myFormEdicion" action="{% url 'editar_secuencias_en_curso' item.pk %}" method="POST"> {% csrf_token %}
                       <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
                       <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+                      
+                  <div class="row">
+                    <div class="col-md-6">
                             <!--FECHA_INICIAL--> 
                     <label  for="">Fecha de Inicio</label>
-                    <input value="{{item.fecha_Inicio|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Inicio" class="numberinput form-control gj-textbox-md" id="fecha_Inicio" width="" data-datepicker="true"> 
-                  <br>
-                      <!--FECHA_INICIAL--> 
+                    <input value="{{item.fecha_Inicio|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Inicio" class="numberinput form-control gj-textbox-md" id="fecha_Inicio" width="" data-datepicker="true" readonly> 
+                  <br><!--FECHA_INICIAL--> 
+                    </div>
+                    <div class="col-md-6">
+                         <!--NOMBRE--> 
+                         <div id="div_id_nombre" class="mb-3">
+                          <label for="id_nombre" class="form-label">
+                              Nombre
+                          </label>
+                          <input type="text" name="nombre" maxlength="250" value="{{item.nombre}}" class="numberinput form-control gj-textbox-md" id="id_nombre" required> 
+                        </div>         
+                           <!--NOMBRE-->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                       <!--PROTOCOLO METODO-->
+                   <label class="form-label" for="">Protocolo de Método</label>
+                   <div class="form-group numberinput form-control gj-textbox-md" >
+                     <select style="display:none"   name="protocolo" style="width: 100%;" required="" id="id_protocolo" class="select numberinput form-control gj-textbox-md">
+                         <option value="{{item.protocolo_id}}">{{item.protocolo}}</option>
+                         {% if perms.auth.view_user %}
+                         {% for item1 in protocolos.all %}
+                         {% if item1.estado_protocolo.id == 1 or item1.estado_protocolo.id == 7 and item1.condicion == "Activo"  %}
+                         <option value="{{item1.id}}">{{item1}}</option>
+                       {% endif %}
+                       {% endfor %}
+                       {% endif %}
+                       </select>
+                   </div><br>
+                 <!--PROTOCOLO METODO-->
+                    </div>
+                    <div class="col-md-6">
+                      <!--PROTOCOLO PROCESO-->
+                      <label class="form-label" for="id_protocolo_proceso">Protocolo de Proceso</label>
+                      <div class="form-group numberinput form-control gj-textbox-md" >
+                        <select style="display:none" name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md dis" >
+                          <option value="{{item.protocolo_proceso_id}}">{{item.protocolo_proceso}}</option>
+                          {% if perms.auth.view_user %}
+                          {% for item1 in protocolo_proceso.all %}
+                          {% if item1.estado_del_proceso.id == 1 or item1.estado_del_proceso.id == 7 and item1.condicion == "Activo"  %}
+                          <option value="{{item1.id}}">{{item1}}</option>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div><br>
+                    <!--PROTOCOLO PROCESO-->  
+                    </div>
+                  </div>
+                  
+                    
+                      
+                       
                           <!--FECHA_FINAL--> 
                           <div style="display: none;">
                             <input value="{{item.fecha_Final|date:'Y-m-d H:i'}}" type="datetime-local" name="fecha_Final" class="numberinput form-control gj-textbox-md" id="fecha_Final" width="" data-datepicker="true"> 
@@ -514,57 +862,70 @@
                         </div>
                      -->   
                         <!--HORA_FINAL-->
-                      <!--NOMBRE--> 
-                      <div id="div_id_nombre" class="mb-3">
-                        <label for="id_nombre" class="form-label">
-                            Nombre
-                        </label>
-                        <input type="text" name="nombre" maxlength="250" value="{{item.nombre}}" class="numberinput form-control gj-textbox-md" id="id_nombre" required> 
-                      </div>         
-                         <!--NOMBRE-->
+                  
                       <!--FECHA_IMPRESION REPORTE Y AUDITORIA--> 
                  <input value="{{item.fecha_impresion|date:'Y-m-d H:i'}}" type="text" name="fecha_impresion" class="numberinput form-control gj-textbox-md " id="fecha_impresion" width="" data-datepicker="true" style="display: none;"> 
                  <input value="{{item.fecha_reporte|date:'Y-m-d H:i'}}" type="text" name="fecha_reporte" class="numberinput form-control gj-textbox-md " id="fecha_reporte" width="" data-datepicker="true" style="display: none;" > 
                  <input value="{{item.fecha_auditada|date:'Y-m-d H:i'}}" type="text" name="fecha_auditada" class="numberinput form-control gj-textbox-md " id="fecha_auditada" width="" data-datepicker="true" style="display: none;"> 
-                 <!--FECHA_IMPRESION REPORTE Y AUDITORIA-->    
-                         <!--PROTOCOLO-->
-                          <label class="form-label" for="">Protocolo</label>
-                          <div class="form-group numberinput form-control gj-textbox-md" >
-                            <select style="display:none"   name="protocolo" style="width: 100%;" required="" id="id_protocolo" class="select numberinput form-control gj-textbox-md" readonly="true">
-                                <option value="{{item.protocolo_id}}">{{item.protocolo}}</option>
-                                {% for item1 in protocolos.all %}
-                                {% if item1.estado_protocolo.id == 1 and item1.condicion == "Activo" %}
-                              <option value="{{item1.id}}">{{item1}}</option>
-                              {% endif %}
-                              {% endfor %}
-                              </select>
-                          </div><br>
-                          
-                        <!--PROTOCOLO-->
-                         <!--SISTEMA-->
-                         
-                          <label class="form-label" for="id_sistema">Sistema</label>
-                          <div class="form-group numberinput form-control gj-textbox-md ">
-                          <select style="display:none"  name="sistema" style="width: 100%;" class="select numberinput form-control gj-textbox-md" title="" required="" id="id_sistema" readonly>
-                          <option value="{{item.sistema_id}}">{{item.sistema}}</option>
-                          {% for item1 in sistema.all %}
-                          <option value="{{item1.id}}">{{item1}}</option>
-                          {% endfor %}
-                        </select>
-                      </div><br>
-                        <!--SISTEMA-->
-                          <!--PARAMETRO-->
-                          
+                 <!--FECHA_IMPRESION REPORTE Y AUDITORIA-->  
+               
+                 <div class="row">
+                  <div class="col-md-6">
+                   <!--SISTEMA-->
+                   <label class="form-label" for="id_sistema">Sistema</label>
+                   <div class="form-group numberinput form-control gj-textbox-md ">
+                   <select style="display:none"  name="sistema" style="width: 100%;" class="select numberinput form-control gj-textbox-md" title="" required="" id="id_sistema" readonly>
+                   <option value="{{item.sistema_id}}">{{item.sistema}}</option>
+                   {% for item1 in sistema.all %}
+                   <option value="{{item1.id}}">{{item1}}</option>
+                   {% endfor %}
+                 </select>
+               </div><br>
+                 <!--SISTEMA-->  
+                  </div>
+                  <div class="col-md-6">
+                  <!--METODO-->
+                                 <label class="form-label" for="id_metodo">Metodo</label>
+                                 <div class="form-group numberinput form-control gj-textbox-md" >
+                                   <select style="display:none" name="metodo" style="width: 100%;" required="" id="id_metodo" class="select numberinput form-control gj-textbox-md">
+                                     <option value="{{item.metodo_id}}">{{item.metodo}}</option>
+                                     {% if perms.auth.view_user %}
+                                     {% for item1 in metodo.all %}
+                                     <option value="{{item1.id}}">{{item1}}</option>
+                                     {% endfor %}
+                                     {% endif %}
+                                   </select>
+                                 </div><br>
+                   <!--METODO-->    
+                  </div>
+                 </div>
+                <!--PARAMETRO-->
                             <label class="form-label" for="id_parametro_sq">Parametro</label>
                             <div class="form-group numberinput form-control gj-textbox-md" >
-                            <select style="display:none"  style="width: 100%;"  name="parametro_sq" class=" select form-control gj-textbox-md" value="{{item.parametro_sq_id}}" title="" required="" id="id_parametro_sq" readonly>
+                            <select style="display:none"  style="width: 100%;"  name="parametro_sq" class=" select form-control gj-textbox-md" value="{{item.parametro_sq_id}}" title="" required="" id="id_parametro_sq">
                             <option value="{{item.parametro_sq_id}}">{{item.parametro_sq}}</option>
+                            {% if perms.auth.view_user %}
                             {% for item1 in parametros.all %}
                             <option value="{{item1.id}}">{{item1}}</option>
                             {% endfor %}
+                            {% endif %}
                           </select>
                         </div><br>
-                          <!--PARAMETRO-->
+                  <!--PARAMETRO-->
+                        <!--MUESTRA PROCESO -->
+                        <label class="form-label" for="id_muestras">Muestras (Proceso, estabilidad o ensayo) </label>
+                        <div class="form-group numberinput form-control gj-textbox-md">
+                        <select style="display:none"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras" >
+                          <option value="{{item.muestras_id}}">{{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.etapa}} {{item.muestras.codigo_muestra_producto}}</option>
+                          {% if perms.auth.view_user %}
+                          {% for item1 in muestras.all %}
+                          <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                        {% endfor %}
+                        {% endif %}
+                      </select>
+                    </div><br>
+                      <!--MUESTRA PROCESO -->
+
                           <!--OBSERVACIONES-->
                           <div id="div_id_observaciones" class="mb-3">
                             <label for="id_observaciones" class="form-label requiredField">
@@ -592,10 +953,10 @@
                     <!--SCRIPTS FINAL PARA SELECT2-->
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                      <button type="submit" class="btn btn-primary" style="background-color: #1b3d70c2;">Guardar cambios</button>
+                      <button type="submit"  class="btn btn-primary" style="background-color: #1b3d70c2;" >Guardar</button>
                     </div>
-                </form>
-           
+                </form>´
+                          
               </div>
             </div>
           </div>
@@ -614,6 +975,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
+            <!-- PRUEBA SELECT MULTIPLE
+                        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+         
+          <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/wenzhixin/multiple-select/e14b36de/multiple-select.css">
+          <script src="https://cdn.rawgit.com/wenzhixin/multiple-select/e14b36de/multiple-select.js"></script>
+ 
+            -->
               <form  name="myFormCreacion" id="myFormCreacion"  action="{% url 'crear_secuencias' %}"  method="POST"> {% csrf_token %}
                   <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS -->
                   <div style="display:none;">
@@ -621,9 +989,11 @@
                 <input  value="2024-01-01" type="" name="fecha_Invalidez" class="numberinput form-control gj-textbox-md" id="id_fecha_Invalidez" width="" data-datepicker="true">
               </div>
                 <!--FECHA_INVALIZ PARA EVITAR REGISTROS DUPLICADOS --> 
-                    <!--FECHA_INICIO--> 
+                 <div class="row">
+                  <div class="col-md-6">
+                       <!--FECHA_INICIO--> 
               <label  for="">Fecha de Inicio</label>
-              <input  value="" type="datetime-local" name="fecha_Inicio" class="numberinput form-control gj-textbox-md" id="fecha_Inicio" width="" data-datepicker="true" > 
+              <input  value="" type="datetime-local" name="fecha_Inicio" class="numberinput form-control gj-textbox-md" id="fecha_Inicio" width="" data-datepicker="true" required > 
             <br>            
                 <!--FECHA_INICIO-->
              <!--FECHA_Y_HORA_FINAL--> 
@@ -638,7 +1008,12 @@
              <!--FECHA_Y_HORA_FINAL--> 
 
 
-                <!--NOMBRE--> 
+             
+
+                  </div>
+                  <div class="col-md-6
+                  ">
+                     <!--NOMBRE--> 
                 <div id="div_id_nombre" class="mb-3">
                   <label for="id_nombre" class="form-label">
                       Nombre
@@ -647,39 +1022,81 @@
                 </div>         
                    <!--NOMBRE-->
 
+                  </div>
+                 </div>
+
                  <!--FECHA_IMPRESION REPORTE Y AUDITORIA--> 
                  <input value="{{item.fecha_impresion|date:'Y-m-d H:i'}}" type="text" name="fecha_impresion" class="numberinput form-control gj-textbox-md " id="fecha_impresion" width="" data-datepicker="true" style="display: none;"> 
                  <input value="{{item.fecha_reporte|date:'Y-m-d H:i'}}" type="text" name="fecha_reporte" class="numberinput form-control gj-textbox-md " id="fecha_reporte" width="" data-datepicker="true" style="display: none;" > 
                  <input value="{{item.fecha_auditada|date:'Y-m-d H:i'}}" type="text" name="fecha_auditada" class="numberinput form-control gj-textbox-md " id="fecha_auditada" width="" data-datepicker="true" style="display: none;"> 
                  <!--FECHA_IMPRESION REPORTE Y AUDITORIA--> 
+                 <div class="row">
+                  <div class="col-md-6">
+                       <!--PROTOCOLO METODO-->
+                       <label class="form-label" for="id_protocolo">Protocolo de Método</label>
+                       <div class="form-group numberinput form-control gj-textbox-md" >
+                         <select name="protocolo" style="width: 100%;" required="" id="id_protocolo" class="select numberinput form-control gj-textbox-md">
+                           <option></option>
+                           {% for item1 in protocolos.all %}
+                           {% if item1.estado_protocolo.id == 1 or item1.estado_protocolo.id == 7 and item1.condicion == "Activo"  %}
+                           <option value="{{item1.id}}">{{item1}}</option>
+                           {% endif %}
+                           {% endfor %}
+                         </select>
+                       </div><br>
+                     <!--PROTOCOLO METODO-->
 
-                   <!--PROTOCOLO-->
-                    <label class="form-label" for="id_protocolo">Protocolo</label>
-                    <div class="form-group numberinput form-control gj-textbox-md" >
-                      <select name="protocolo" style="width: 100%;" required="" id="id_protocolo" class="select numberinput form-control gj-textbox-md">
-                        <option></option>
-                        {% for item1 in protocolos.all %}
-                        {% if item1.estado_protocolo.id == 1 and item1.condicion == "Activo" %}
-                        <option value="{{item1.id}}">{{item1}}</option>
-                        {% endif %}
-                        {% endfor %}
-                      </select>
-                    </div><br>
-                    
-                  
-                  <!--PROTOCOLO-->
-                   <!--SISTEMA-->
+                  </div>
+                  <div class="col-md-6">
+                       <!--PROTOCOLO PROCESO-->
+                       <label class="form-label" for="id_protocolo_proceso">Protocolo de Proceso</label>
+                       <div class="form-group numberinput form-control gj-textbox-md" >
+                         <select name="protocolo_proceso" style="width: 100%;" required="" id="id_protocolo_proceso" class="select numberinput form-control gj-textbox-md">
+                           <option></option>
+                           {% for item1 in protocolos_proceso.all %}
+                           {% if item1.estado_del_proceso.id == 1 or item1.estado_del_proceso.id == 7 and item1.condicion == "Activo"  %}
+                           <option value="{{item1.id}}">{{item1}}</option>
+                           {% endif %}
+                           {% endfor %}
+                         </select>
+                       </div><br>
+                     <!--PROTOCOLO PROCESO-->
+
+                  </div>
+                 </div>
+
+                 <div class="row">
+                  <div class="col-md-6">
+                     <!--SISTEMA-->
                    
-                    <label class="form-label" for="id_sistema">Sistema</label>
-                    <div class="form-group numberinput form-control gj-textbox-md">
-                    <select name="sistema" style="width: 100%;" class="select numberinput form-control gj-textbox-md" title="" required="" id="id_sistema">
-                      <option></option>
-                      {% for item1 in sistema.all %}
-                    <option value="{{item1.id}}">{{item1}}</option>
-                    {% endfor %}
-                  </select>
-                </div><br>
-                  <!--SISTEMA-->
+                     <label class="form-label" for="id_sistema">Sistema</label>
+                     <div class="form-group numberinput form-control gj-textbox-md">
+                     <select name="sistema" style="width: 100%;" class="select numberinput form-control gj-textbox-md" title="" required="" id="id_sistema">
+                       <option></option>
+                       {% for item1 in sistema.all %}
+                     <option value="{{item1.id}}">{{item1}}</option>
+                     {% endfor %}
+                   </select>
+                 </div><br>
+                   <!--SISTEMA-->
+
+                  </div>
+                  <div class="col-md-6">
+                     <!--METODO-->
+                     <label class="form-label" for="id_metodo">Método</label>
+                     <div class="form-group numberinput form-control gj-textbox-md">
+                     <select name="metodo" style="width: 100%;" class="select numberinput form-control gj-textbox-md" title="" required="" id="id_metodo">
+                       <option></option>
+                       {% for item1 in metodo.all %}
+                     <option value="{{item1.id}}">{{item1}}</option>
+                     {% endfor %}
+                   </select>
+                 </div><br>
+                   <!--METODO-->
+
+                  </div>
+                 </div>
+         
                     <!--PARAMETRO-->
                       <label class="form-label" for="id_parametro_sq">Parametro</label>
                       <div class="form-group numberinput form-control gj-textbox-md">
@@ -691,6 +1108,52 @@
                     </select>
                   </div><br>
                     <!--PARAMETRO-->
+                    <!--MUESTRA PROCESO -->
+                    <label class="form-label" for="id_muestras">Muestras (Proceso, estabilidad o ensayo) </label>
+                    <div class="form-group numberinput form-control gj-textbox-md">
+                    <select style="width: 100%;"  name="muestras" class=" select form-control "  title="" required="" id="id_muestras">
+                      <option></option>
+                      {% for item1 in muestras.all %}
+                      <option value="{{item1.id}}">{{item1.nombre_muestra}} {{item1.lote_muestra}} {{item1.etapa}} {{item1.codigo_muestra_producto}}</option>
+                    {% endfor %}
+                  </select>
+                </div><br>
+                  <!--MUESTRA PROCESO -->
+                          <!--MUESTRA PROCESO PRUEBA-->
+                         <!--
+                          <label class="form-label" for="id_muestra">Muestras</label>
+                          <div class="form-group numberinput form-control gj-textbox-md" >
+                          <select style="width: 100%;" name="muestras"   title="" required="" id="id_muestras">
+                            {% for item1 in muestras.all %}
+                          <option value="{{item1.id}}" class="container ">{{item1}}</option>
+                          
+                          {% endfor %}
+                        
+                        </select>
+                      </div><br>
+                        <script>
+                          // Initialize multiple select on your regular select
+                          $("#id_muestras").multipleSelect({
+                            selectAll:false,
+                            //placeholder    :'Selecciona',
+                            filter: true,
+                            
+          dropdownParent:$("#crear_secuencias_en_curso"),
+                          });
+                        </script>
+                        <style>  
+                          .container 
+                          {  
+                              margin-top: 15px; 
+                              color: rgb(86, 86, 87);
+                              
+                              font-size: 0.84em;
+                             
+                          }   
+                        </style> 
+                         -->
+                        <!--MUESTRA PROCESO PRUEBA--->
+                        
                     <!--OBSERVACIONES-->
                     <div id="div_id_observaciones" class="mb-3">
                       <label for="id_observaciones" class="form-label requiredField">
@@ -711,9 +1174,10 @@
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
          <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
          <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-          <script>
+
+                   <script>
           $('.select').css('width', '100%').select2({
-          theme: "classic",
+          //theme: "classic",
           dropdownParent:$("#crear_secuencias_en_curso"),
           placeholder:"seleccione"
           });
@@ -721,26 +1185,58 @@
                     <!--SCRIPTS FINAL PARA SELECT2-->
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                      <button type="submit" onclick='confirmar(event)' name='reservar' id='reservar' class="btn btn-primary" style="background-color: #1b3d70c2;" >Guardar</button>
+                      <button type="submit" onclick='confirmar(event)' class="btn btn-primary" style="background-color: #1b3d70c2;" >Guardar</button>
                     </div>
                 </form>
                        <!-- Validación de campos -->
 <script>
   function confirmar(event) { 
-    let x = document.forms["myFormCreacion"]["nombre"].value;
-    if (x.length <= 8) {
-Swal.fire({
-icon: "error",
-title: "El nombre de secuencia es muy corto!",
-});
+    
+    let nombre = document.forms["myFormCreacion"]["nombre"].value;
+    let fechaInicio = document.forms["myFormCreacion"]["fecha_Inicio"].value;
+    let sistema = document.forms["myFormCreacion"]["sistema"].value;
+    let parametro_sq = document.forms["myFormCreacion"]["parametro_sq"].selectedIndex;
+    let protocolo = document.forms["myFormCreacion"]["protocolo"].selectedIndex;
+    let protocolo_proceso = document.forms["myFormCreacion"]["protocolo_proceso"].selectedIndex;
+    let metodo = document.forms["myFormCreacion"]["metodo"].selectedIndex;
+    let muestras = document.forms["myFormCreacion"]["muestras"].selectedIndex;
+    let observaciones = document.forms["myFormCreacion"]["observaciones"].value;
+    
+if (nombre == "" || fechaInicio == "" || sistema == "" || parametro_sq == "" || protocolo == "" || protocolo_proceso == "" || metodo == "" || muestras == "" || observaciones == "") {
+alert("Todos los campos son obligatorios!");
 e.preventDefault();}
-let y = document.forms["myFormCreacion"]["fecha_Inicio", "sistema", "protocolo", "parametro", "observaciones"].value;
-    if (y == "") {
-Swal.fire({
-icon: "error",
-title: "Todos los campos son obligatorios!",
-});
-e.preventDefault();}  
+if (nombre.length <= 8) {
+alert("El nombre de secuencia es muy corto!");
+e.preventDefault();}
+if (protocolo >= 2 && protocolo_proceso >= 2 ) {
+  alert("Debe seleccionar una sola clase de protocolo!");
+e.preventDefault();}
+if (protocolo >= 2 && metodo >= 2 || protocolo_proceso >= 2 && metodo >= 2 ) { 
+  alert("Debe seleccionar una sola clase de método o protocolo!");
+e.preventDefault();}
+if (protocolo < 2 && protocolo_proceso < 2 && metodo < 2) { 
+  alert("Debe seleccionar un método o protocolo!");
+e.preventDefault();}
+if (protocolo >= 2 && muestras >= 2) { 
+  alert("Debe seleccionar la opción 'Ninguna (N.A)' en el campo de muestras!");
+e.preventDefault();}
+if (protocolo_proceso >= 2 && muestras < 2) { 
+  alert("Debe seleccionar una muestra valida!");
+e.preventDefault();} 
+if (protocolo_proceso >= 2 && parametro_sq >= 2 ) { 
+  alert("Debe seleccionar la opción 'N.A' en el campo de parámetros!");
+e.preventDefault();}
+if (protocolo < 2 && protocolo_proceso < 2 && metodo >= 2 && muestras < 2) { 
+  alert("Debe seleccionar una muestra valida!");
+e.preventDefault();}
+if (protocolo < 2 && protocolo_proceso < 2 && metodo >= 2 && parametro_sq >= 2) { 
+  alert("Debe seleccionar la opción 'N.A' en el campo de parámetros!");
+e.preventDefault();}
+if (protocolo >= 2 && parametro_sq < 2 ) { 
+  alert("Debe seleccionar un parámetro válido!");
+  e.preventDefault();}
+  
+
     event.preventDefault();
     Swal.fire({
   title: "Está seguro?",
@@ -757,18 +1253,11 @@ e.preventDefault();}
     })
 }
 </script>
+
  
               </div>
             </div>
           </div>
-
-
-
-
-
-
-
-   
 
 
           <!-- Formulario Creacion Modal Final -->

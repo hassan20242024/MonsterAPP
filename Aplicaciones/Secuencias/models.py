@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-from Aplicaciones.Protocolo_Metodos.models import Protocolos, Parametro, Ensayo
+from Aplicaciones.Protocolo_Metodos.models import Protocolos, Parametro, Ensayo, Muestras_y_Placebos, Metodo
+from Aplicaciones.Protocolo_Muestras.models import Proceso
 from Aplicaciones.perfiles.models import Perfil
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -78,6 +79,7 @@ class Secuencias(models.Model):
     fecha_Final=models.DateTimeField(verbose_name="Fecha de Finalización", null=True, blank=True)
     #hora_Final=models.TimeField(verbose_name="Hora de Finalización", null=True, blank=True )
     protocolo=models.ForeignKey(to=Protocolos, on_delete=models.CASCADE, verbose_name="Protocolo", null=True, blank=True)
+    protocolo_proceso=models.ForeignKey(to=Proceso, on_delete=models.CASCADE, verbose_name="Protocolo de Proceso", null=True, blank=True)
     sistema=models.ForeignKey(to=Sistema, on_delete=models.CASCADE, verbose_name="Sistema", null=True, blank=False)
     class Status(models.TextChoices):
         REGISTRADA = "Registrada", "REGISTRADA"
@@ -93,6 +95,9 @@ class Secuencias(models.Model):
     condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion", null=True, blank=True)  
     observaciones=models.CharField(max_length=250, verbose_name="Observaciones",  null=True, blank=False)
     parametro_sq=models.ForeignKey(to=Parametro, on_delete=models.CASCADE, verbose_name="Parametro", null=True, blank=True)
+    metodo=models.ForeignKey(to=Metodo, on_delete=models.CASCADE, verbose_name="Metodo", null=True, blank=True)
+    #muestras=models.ManyToManyField(to=Muestras_y_Placebos, blank=False)
+    muestras=models.ForeignKey(to=Muestras_y_Placebos, on_delete=models.CASCADE, verbose_name="Muestras", null=True, blank=True)
     invalidez=models.ForeignKey(to=Invalidar_Secuencia, on_delete=models.CASCADE, verbose_name="Invalidar", null=True, blank=True, default="N.A")
     fecha_invalidar=models.DateTimeField(verbose_name="Fecha de Invalidéz", null=True, blank=True)
     fecha_validar=models.DateTimeField(verbose_name="Fecha de Validación", null=True, blank=True)
@@ -110,7 +115,9 @@ class Secuencias(models.Model):
     auditar=models.ForeignKey(to=usuario_auditor, on_delete=models.CASCADE, verbose_name="Auditada por", null=True, blank=True)
    
     class Meta:
-       unique_together = ("protocolo", "parametro_sq", "fecha_Invalidez")
+       unique_together = ("protocolo", "parametro_sq", "fecha_Invalidez", "muestras")
+       unique_together = ("protocolo_proceso", "muestras", "fecha_Invalidez", "parametro_sq")
+
 
     #def clean_end_time(self):
         #if self.fecha_Final < self.fecha_Inicio:

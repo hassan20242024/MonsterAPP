@@ -17,7 +17,7 @@
 
 <div class="container-fluid">
   <div class="pagetitle"><br>
-    <h4 class="">Gestión de Protocolos</h4><br>
+    <h4 class="">Gestión de Protocolos de Métodos</h4><br>
   </div>
   <div class="card">
     <div class="container-fluid">
@@ -72,7 +72,7 @@
             <tbody id="myTable">
               
               {% for p in protocolo_metodos %}
-              {% if p.condicion == "Activo" %}
+              {% if p.condicion == "Activo" and p.estado_protocolo.id != 7  %}
             <tr>
             
           

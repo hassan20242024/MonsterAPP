@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Secuencias, Protocolos, Parametro, Ensayo, Sistema, Invalidar_Secuencia,Perfil,usuario_invalidar,usuario_validar, usuario_reporte,usuario_impresion,usuario_auditor
+from .models import Secuencias,Proceso,Muestras_y_Placebos, Protocolos, Parametro,Metodo, Ensayo, Sistema, Invalidar_Secuencia,Perfil,usuario_invalidar,usuario_validar, usuario_reporte,usuario_impresion,usuario_auditor
 from .forms import secuenciasForm
 from django.contrib import messages
 from django.db.models.signals import post_save
@@ -63,7 +63,9 @@ def crear_secuencias_en_curso(request):
     pkt = Protocolos.objects.values("parametro")
     secuencias1=Secuencias.objects.values("parametro_sq")
     secuenicas=Secuencias.objects.all()
+    metodo=Metodo.objects.all()
     protocolos=Protocolos.objects.all()
+    protocolo_proceso =Proceso.objects.all()
     parametros=Parametro.objects.all()
     ensayo=Ensayo.objects.all()
     sistema=Sistema.objects.all()
@@ -71,6 +73,10 @@ def crear_secuencias_en_curso(request):
     usuario=Perfil.objects.all()
     invalidar=usuario_invalidar.objects.filter(usuario=request.user)
     validar=usuario_validar.objects.filter(usuario=request.user)
+    protocolos_proceso=Proceso.objects.all()
+    muestras=Muestras_y_Placebos.objects.all()
+    
+   
    
     #protocolos_id = request.GET.get('protocolo')
     #parametro_dependiente = Parametro.objects.filter(nombre_parametro=protocolos_id).order_by('nombre_parametro')
@@ -93,6 +99,7 @@ def crear_secuencias_en_curso(request):
         
     context={
         #"titulo":titulo,
+        "metodo":metodo,
         "invalidar":invalidar,
         "validar":validar,
         "form":form,
@@ -103,6 +110,9 @@ def crear_secuencias_en_curso(request):
          "ensayo":ensayo,
          "sistema":sistema,
          "usuario":usuario,
+         "protocolos_proceso":protocolos_proceso,
+         "muestras":muestras,
+         "protocolo_proceso":protocolo_proceso,
         
         
          #"parametro_dependiente":parametro_dependiente,
@@ -112,6 +122,9 @@ def crear_secuencias_en_curso(request):
 def proceso_secuencias_en_curso(request):
     secuenicas=Secuencias.objects.all()
     protocolos=Protocolos.objects.all()
+    protocolo_proceso =Proceso.objects.all()
+    muestras=Muestras_y_Placebos.objects.all()
+    metodo=Metodo.objects.all()
     parametros=Parametro.objects.all()
     ensayo=Ensayo.objects.all()
     sistema=Sistema.objects.all()
@@ -144,6 +157,9 @@ def proceso_secuencias_en_curso(request):
         "auditar":auditar,
          "imprimir":imprimir,
          "usuarios":usuarios,
+         "protocolo_proceso":protocolo_proceso,
+         "muestras":muestras,
+         "metodo":metodo,
          #"secuencias1":secuencias1,
     
     }
@@ -323,7 +339,7 @@ def duplicar_secuencias(request, pk):
        
         if form.is_valid():
             form.save()
-            messages.success(request, "La secuencia ha sido duplicada")
+            messages.success(request, "La secuencia ha sido agregada")
            
             return redirect("crear_secuencias_en_curso")
         else:
@@ -345,6 +361,49 @@ def duplicar_secuencias(request, pk):
          "secuencia":secuencia,
     }
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
+@login_required
+def duplicar_secuencias_muestras(request, pk):
+    titulo="Crear Secuencias"
+  
+    secuencia=Secuencias.objects.get(id=pk)
+    protocolos=Protocolos.objects.all()
+    parametros=Parametro.objects.all()
+    sistema=Sistema.objects.all()
+
+    ensayo=Ensayo.objects.all()
+
+   
+    if request.method == "POST":
+        form = secuenciasForm(request.POST)
+       
+        if form.is_valid():
+            form.save()
+            messages.success(request, "La secuencia ha sido agregada")
+           
+            return redirect("crear_secuencias_en_curso")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+             return redirect("crear_secuencias_en_curso")    
+    else:
+        form = secuenciasForm() 
+        
+    context={
+        "titulo":titulo,
+        "form":form,
+        
+        
+        
+        "protocolos":protocolos,
+        "parametros":parametros,
+         "ensayo":ensayo,
+         "sistema":sistema,
+         "secuencia":secuencia,
+    }
+    return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
+
+
 @login_required
 def invalidar_prueba(request, pk):
     titulo="Crear Secuencias"
@@ -669,4 +728,47 @@ def auditar_secuencias(request, pk):
          "secuencia":secuencia,
     }
    return render(request, "secuencias/proceso_secuencias_en_curso.html", context)
+
+
+@login_required
+def actualizar_secuencias_validadas(request, pk):
+   titulo="Crear Secuencias"
+  
+   secuencia=Secuencias.objects.get(id=pk)
+   protocolos=Protocolos.objects.all()
+   parametros=Parametro.objects.all()
+   sistema=Sistema.objects.all()
+    
+
+   ensayo=Ensayo.objects.all()
+
+   
+   if request.method == "POST":
+        form = secuenciasForm(request.POST, instance=secuencia)
+       
+        if form.is_valid():
+            form.save()
+            messages.success(request, "La secuencia ha sido actualizada")
+           
+            return redirect("proceso_secuencias_en_curso")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+             return redirect("crear_secuencias_en_curso")    
+   else:
+        form = secuenciasForm(instance=secuencia) 
+        
+   context={
+        "titulo":titulo,
+        "form":form,
+        
+        
+        
+        "protocolos":protocolos,
+        "parametros":parametros,
+         "ensayo":ensayo,
+         "sistema":sistema,
+         "secuencia":secuencia,
+    }
+   return render(request, "secuencias/actualizar_secuencias_validadas.html", context)
+
 

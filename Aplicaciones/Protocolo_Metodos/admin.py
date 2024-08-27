@@ -15,7 +15,7 @@ from .models import Cliente
 from .models import Celda
 from .models import Tipo_muestra
 from .models import Etapa
-
+from .models import Metodo
 
 #admin.site.site_header = "monsterApp"
 
@@ -23,11 +23,8 @@ from .models import Etapa
 #admin.site.index_title = "Portal de administración MonsterApp"
 
 
-
-
-
-
 # Register your models here.
+
 class EnsayoAdmin(admin.ModelAdmin):
     search_fields = ("nombre_ensayo"),
     list_display = ["id", "nombre_ensayo"]
@@ -64,7 +61,12 @@ class ProtocolosAdmin(admin.ModelAdmin):
     #autocomplete_fields = ["metodologia", "cliente"]
     search_fields = ("nombre"),
     list_display=["id","codigo","nombre","ensayo","metodologia","cliente","estado_protocolo","observaciones"]
-    
+
+class MetodoAdmin(admin.ModelAdmin):
+    search_fields = ("codigo_metodo"),
+    list_display = ["id","codigo_metodo", "nombre_metodo" ]
+
+ 
 
 
   
@@ -82,6 +84,7 @@ admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Celda, CeldaAdmin)
 admin.site.register(Tipo_muestra)
 admin.site.register(Etapa)
+admin.site.register(Metodo, MetodoAdmin)
 
 
 
