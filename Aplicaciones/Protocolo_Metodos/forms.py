@@ -8,7 +8,8 @@ from django_select2 import forms as s2forms
 #from simple_autocomplete.widgets import AutoCompleteWidget
 
 
-from .models import Protocolos, Parametro, Metodologia, EstadoProtocolo,Ensayo,Viabilidad, Subparametro,Titulo_Parametro, Muestras_y_Placebos, Cliente
+from .models import Protocolos, Parametro, Metodologia, EstadoProtocolo,Ensayo,Viabilidad, Subparametro,Titulo_Parametro, Muestras_y_Placebos, Cliente, Celda, Metodo, Tipo_muestra, Etapa
+from Aplicaciones.Secuencias.models import Sistema
 
 class ProtocolosForm(forms.ModelForm):
     nombre = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'placeholder': 'Título del Protocolo'}))
@@ -80,6 +81,31 @@ class clienteForm(forms.ModelForm):
     class Meta:
         model=Cliente
         exclude=["condicion"] 
+
+class sistemaForm(forms.ModelForm):
+    class Meta:
+        model=Sistema
+        exclude=["condicion"] 
+
+class CeldaForm(forms.ModelForm):
+    class Meta:
+        model=Celda
+        exclude=["condicion"] 
+        
+class MetodoForm(forms.ModelForm):
+    class Meta:
+        model=Metodo
+        exclude=["condicion"]  
+
+class tipo_muestrasForm(forms.ModelForm):
+    class Meta:
+        model=Tipo_muestra
+        exclude=["condicion"]  
+
+class EtapaForm(forms.ModelForm):
+    class Meta:
+        model=Etapa
+        exclude=["condicion"]                     
 
 
 

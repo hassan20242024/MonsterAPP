@@ -35,8 +35,8 @@ class Ensayo(models.Model):
         return(self.nombre_ensayo) 
     
 class Metodo(models.Model):
-    codigo_metodo=models.CharField(verbose_name="Método (código)", max_length=90, unique=True)
-    nombre_metodo=models.CharField(verbose_name="Método (Nombre)", max_length=90, unique=True)
+    codigo_metodo=models.CharField(verbose_name="código", max_length=90, unique=True)
+    nombre_metodo=models.CharField(verbose_name="Nombre", max_length=90, unique=True)
     class Condicion(models.TextChoices):
         ACTIVO = "Activo", "ACTIVO"
         PASIVO = "Pasivo", "PASIVO"
@@ -162,7 +162,7 @@ class Muestras_y_Placebos(models.Model):
     nombre_muestra=models.CharField(max_length=300, verbose_name="nombre de Muestra/Placebo/MP")
     tipo_muestra=models.ForeignKey(to=Tipo_muestra, on_delete=models.CASCADE, verbose_name="Tipo de muestra", null=True, blank=False)
     etapa=models.ForeignKey(to=Etapa, on_delete=models.CASCADE, verbose_name="Etapa", null=True, blank=False)
-    codigo_muestra_interno=models.CharField(verbose_name="CIM / LIMS", max_length=90, unique=True)
+    codigo_muestra_interno=models.CharField(verbose_name="CIM / LIMS", max_length=90)
     codigo_muestra_producto=models.CharField(verbose_name="Código de Producto", max_length=90)
     lote_muestra=models.CharField(verbose_name="Lote", max_length=90)
     observaciones_muestras=models.TextField(max_length=300, verbose_name="Observaciones")

@@ -43,8 +43,9 @@
                             <th class="all text-center" >Fecha/Hora Inicio</th>
                             <th class="all text-center">Secuencia</th>
                             <th class="all text-center">Sistema</th>
-                            <th class="all text-center">Protocolo</th>
+                            <th class="all text-center">Protocolo/Método</th>
                             <th class="all text-center">Parámetro</th>
+                            <th class="all text-center">Muestras</th>
                             <th class="all text-center">Causa</th>
                             <th class="text-center" >Acciones</th>
                         </tr>
@@ -56,8 +57,31 @@
                             <td class="all text-center">{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.sistema}}</td>
-                        <td >{{item.protocolo}}</td>
-                        <td >{{item.parametro_sq}}</td>
+                        <td >
+                          {% if item.protocolo.id > 67 %}
+                          {{item.protocolo}}
+                          {% endif %}
+                          {% if item.protocolo_proceso.id > 9 %}
+                          {{item.protocolo_proceso}}
+                          {% endif %}
+                          {% if item.metodo.id > 2 %}
+                          {{item.metodo}}
+                          {% endif %}
+                        </td>
+                      
+                        <td> {% if item.parametro_sq.id == 25 %}
+                          No Aplica
+                          {% else %}
+                          {{item.parametro_sq}}
+                          <a href="{% url 'duplicar_secuencias' item.pk %}" title="Agregar nuevo parámetro" class=" text-center"  data-bs-target="#duplicar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
+                          {% endif %}
+                        </td>
+                        <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 16 %}
+                          No Aplica
+                          {% else %}
+                          <div class="accordian-body collapse" id="demo1"> {{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.codigo_muestra_producto}} </div>Etapa: {{item.muestras.etapa}}
+                          {% endif %}
+                        </td>
                         <td class="text-danger">{{item.invalidez}}</td>
                         <td >
                             <a href="{% url 'validar_secuencias' item.pk %}" class="btn btn-primary btn-circle all text-center" style="background:#486af3b8" data-bs-target="#validar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-thumbs-up">Validar</span></a>

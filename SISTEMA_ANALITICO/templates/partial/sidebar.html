@@ -47,13 +47,13 @@
               
               <a href="{% url 'protocolo_metodos' %}" class="nav-link">
                 <i class="far fa-eye"></i>
-                <p>Ver Protocolos</p>
+                <p>Ver Protocolos de Método</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{% url 'crear_protocolo_metodos' %}" class="nav-link">
                 <i class="fa fa-plus"></i>
-                <p>Crear Protocolos</p>
+                <p>Crear Protocolos de Método</p>
               </a>
             </li>
            
@@ -105,14 +105,7 @@
             {% endif %}
          </ul>
 
-         {% if user.is_authenticated and perms.auth.view_user %}
-         <li class="nav-item ">
-          <a href="{% url 'configuracion_protocolo_metodos' %}" class="nav-link">
-            <i class="fas fa-cogs"></i>
-
-             <p>Configuración Protoclos</p><br>
-           </a>
-         </li>{% endif %}
+         
         
     
 
@@ -132,30 +125,43 @@
         </a>
       </li>
       {% endif %}
+      
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a href="{% url 'ingresar_muestras' %}" class="nav-link">
+        <a href="{% url 'muestras' %}" class="nav-link">
           <i class="fa fa-edit"></i>
-          <p>Ingresar muestras</p>
+          <p>Muestras de Análisis</p>
         </a>
       </li>
       {% else %}
       <li class="nav-item">
-        <a href="{% url 'ingresar_muestras' %}" class="nav-link disabled">
+        <a href="{% url 'muestras' %}" class="nav-link disabled">
           <i class="fa fa-edit"></i>
-          <p>Ingresar muestras</p>
+          <p>Muestras</p>
         </a>
       </li>
       {% endif %}
 
-       {% if perms.auth.view_user %}
+       {% if user.is_authenticated and perms.auth.view_user %}
       <li class="nav-header"><strong>AJUSTES</strong></li>
+      <li class="nav-item ">
+        <a href="{% url 'configuracion_protocolo_metodos' %}" class="nav-link">
+          <i class="fas fa-cogs"></i>
+
+           <p>Configuración de Protoclos</p><br>
+         </a>
+       </li>
       <li class="nav-item">
         <a href="{% url 'admin:index' %}" class="nav-link text-white">
           <i class="fas fa-wrench"></i>
           <p>Administración</p>
         </a>
       </li>
+
+
+
+     
+        
      <!--
       <li class="nav-item">
         <a href="{% url 'sign_up' %}" class="nav-link text-white">

@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 
-from .models import Protocolos,Subparametro, Parametro, Metodologia,EstadoProtocolo,Viabilidad,Titulo_Parametro,Muestras_y_Placebos,Ensayo, Cliente
-from .forms import ProtocolosForm,ParametroForm, MetodologiaForm, EstadoProtocoloForm, crear_ensayoForm,ViabilidadForm, SubparametroForm,Titulo_ParametroForm, ingresar_muestrasForm, clienteForm
+from .models import Protocolos,Subparametro, Parametro, Metodologia,EstadoProtocolo,Viabilidad,Titulo_Parametro,Celda,Muestras_y_Placebos,Ensayo, Cliente, Celda, Metodo, Tipo_muestra, Etapa
+from Aplicaciones.Secuencias.models import Sistema
+from django.contrib.auth.models import User
+from .forms import ProtocolosForm,ParametroForm, MetodologiaForm, EstadoProtocoloForm, crear_ensayoForm,ViabilidadForm,sistemaForm, SubparametroForm,Titulo_ParametroForm, ingresar_muestrasForm, clienteForm, CeldaForm, MetodoForm, tipo_muestrasForm, EtapaForm
 from Aplicaciones.Secuencias.models import Secuencias
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -25,64 +27,6 @@ def protocolo_metodos(request):
 
 
 
-
-#def crear_protocolo_metodos(request):  
-  
-    protocolo_metodos=Protocolos.objects.all()
-    seleccionarEnsayo=Ensayo.objects.all()
-    ingresar_muestras=Muestras_y_Placebos.objects.all()
-    seleccionarParametro=Parametro.objects.all()
-    seleccionarMetodologia=Metodologia.objects.all()
-    seleccionarEstadoProtocolo=EstadoProtocolo.objects.all()
-    seleccionarViabilidad=Viabilidad.objects.all()
-    titulo="Crear Protocolos"
-    if request.method == "POST":
-         if request.POST.get('txtFechaIngreso') and \
-            request.POST.get('txtCodigo') and \
-            request.POST.get('nombreProtocolo') and \
-            request.POST.get('txtEnsayo_id') and \
-            request.POST.get('seleccionMetodologia_id') and \
-            request.POST.get('txtParametro_id') and \
-            request.POST.get('muestrasyPlacebos') and \
-            request.POST.get('insumosProceso') and \
-            request.POST.get('estadoProtocolo_id') and \
-            request.POST.get('txtObserbaciones'):
-             
-            generarProtocolo = Protocolos()
-       
-
-            generarProtocolo.fecha_ingreso = request.POST.get("txtFechaIngreso") 
-            generarProtocolo.codigo =request.POST.get('txtCodigo')
-            generarProtocolo.nombre =request.POST.get('nombreProtocolo')
-            generarProtocolo.ensayo_id =request.POST.get('txtEnsayo_id')
-            generarProtocolo.metodologia_id =request.POST.get('seleccionMetodologia_id')
-            generarProtocolo.estado_protocolo_id =request.POST.get('estadoProtocolo_id')
-            generarProtocolo.observaciones =request.POST.get('txtObserbaciones')
-            generarProtocolo.save()
-            
-            generarProtocolo.muestras_y_Placebos.set(request.POST.getlist('muestrasyPlacebos'))
-            generarProtocolo.parametro.set(request.POST.getlist('txtParametro_id'))
-       
-            generarProtocolo.viabilidad.set(request.POST.getlist('insumosProceso'))
-            
-        
-
-       
-            return redirect("protocolo_metodos")
-    else:
-   
-     context={
-        "protocolo_metodos":protocolo_metodos,
-        "seleccionarEnsayo":seleccionarEnsayo,
-        "ingresar_muestras":ingresar_muestras,
-        "seleccionarParametro":seleccionarParametro,
-        "seleccionarMetodologia":seleccionarMetodologia,
-        "seleccionarEstadoProtocolo":seleccionarEstadoProtocolo,
-        "seleccionarViabilidad":seleccionarViabilidad,
-        "titulo":titulo,
-    }
-    return render(request, "protocolo_metodos/crear_protocolo_metodos.html", context)
-
 @login_required
 def crear_protocolo_metodos(request):
     titulo="Crear Protocolos"
@@ -98,7 +42,7 @@ def crear_protocolo_metodos(request):
            
             return redirect("protocolo_metodos")
         else:
-             messages.error(request, "Por favor revisa los datos ingresados")
+             messages.error(request, "Por favor, revisa los datos ingresados")
              #return redirect("crear_protocolo_metodos")
     else:
             
@@ -114,95 +58,6 @@ def crear_protocolo_metodos(request):
     return render(request, "protocolo_metodos/crear_protocolo_metodos.html", context)
 
 
-#def editar_protocolo_metodos(request, id):
-    titulo = "Edicion de Métodos"
-    
-    seleccionarEnsayo=Ensayo.objects.all()
-    ingresar_muestras=Muestras_y_Placebos.objects.all()
-    seleccionarParametro=Parametro.objects.all()
-    seleccionarMetodologia=Metodologia.objects.all()
-    seleccionarEstadoProtocolo=EstadoProtocolo.objects.all()
-    seleccionarViabilidad=Viabilidad.objects.all()
-    generarProtocolo = Protocolos.objects.get(id=id)
-   
-
-    context = {
-        "titulo": titulo,
-        "seleccionarEnsayo":seleccionarEnsayo,
-        "ingresar_muestras":ingresar_muestras,
-        "seleccionarParametro":seleccionarParametro,
-        "seleccionarMetodologia":seleccionarMetodologia,
-        "seleccionarEstadoProtocolo":seleccionarEstadoProtocolo,
-        "seleccionarViabilidad":seleccionarViabilidad,
-     
-        "generarProtocolo":generarProtocolo,
-
-    }
-    return render(request, "protocolo_metodos/editar_protocolo_metodos.html", context)
-
-#def accion_editar_protocolo_metodos(request, id):
-    
-    seleccionarEnsayo=Ensayo.objects.all()
-    ingresar_muestras=Muestras_y_Placebos.objects.all()
-    seleccionarParametro=Parametro.objects.all()
-    seleccionarMetodologia=Metodologia.objects.all()
-    seleccionarEstadoProtocolo=EstadoProtocolo.objects.all()
-    seleccionarViabilidad=Viabilidad.objects.all()
- 
-    
-    titulo="Crear Protocolos"
-    if request.method == "POST":
-         if request.POST.get('txtFechaIngreso') and \
-            request.POST.get('txtCodigo') and \
-            request.POST.get('nombreProtocolo') and \
-            request.POST.get('txtEnsayo_id') and \
-            request.POST.get('seleccionMetodologia_id') and \
-            request.POST.get('txtParametro_id') and \
-            request.POST.get('muestrasyPlacebos') and \
-            request.POST.get('insumosProceso') and \
-            request.POST.get('estadoProtocolo_id') and \
-            request.POST.get('txtObserbaciones'):
-             
-            generarProtocolo = Protocolos.objects.get(id=id)
-            generarProtocolo.fecha_ingreso = request.POST.get("txtFechaIngreso")
-            generarProtocolo.codigo =request.POST.get('txtCodigo')
-            generarProtocolo.nombre =request.POST.get('nombreProtocolo')
-            generarProtocolo.ensayo__id =request.POST.get('txtEnsayo_id') 
-            
-            generarProtocolo.metodologia__id =request.POST.get('seleccionMetodologia_id')
-            generarProtocolo.estado_protocolo__id =request.POST.get('estadoProtocolo_id')
-            generarProtocolo.observaciones =request.POST.get('txtObserbaciones')
-          
-            generarProtocolo.save()
-            
-            generarProtocolo.muestras_y_Placebos.set(request.POST.getlist('muestrasyPlacebos'))
-            generarProtocolo.parametro.set(request.POST.getlist('txtParametro_id'))
-       
-            generarProtocolo.viabilidad.set(request.POST.getlist('insumosProceso.id'))
-            
-            
-            
-            
-            protocolo_metodos=Protocolos.objects.all()
-            
-        
-
-       
-            return redirect("protocolo_metodos")
-    else:
-     
-   
-     context={
-        "protocolo_metodos":protocolo_metodos,
-        "seleccionarEnsayo":seleccionarEnsayo,
-        "ingresar_muestras":ingresar_muestras,
-        "seleccionarParametro":seleccionarParametro,
-        "seleccionarMetodologia":seleccionarMetodologia,
-        "seleccionarEstadoProtocolo":seleccionarEstadoProtocolo,
-        "seleccionarViabilidad":seleccionarViabilidad,
-        "titulo":titulo
-    }
-    return render(request, "protocolo_metodos/editar_protocolo_metodos.html", context)   
 
 @login_required
 def configuracion_protocolo_metodos(request):
@@ -215,9 +70,10 @@ def configuracion_protocolo_metodos(request):
         form = ParametroForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("configuracion_protocolo_metodos")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = ParametroForm() 
     
@@ -332,10 +188,10 @@ def editar_parametro(request, pk):
         form = ParametroForm(request.POST, instance=Pto)
         if form.is_valid():
             form.save()
-           
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("configuracion_protocolo_metodos")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = ParametroForm(instance=Pto)
 
@@ -355,9 +211,10 @@ def subparametro(request):
         form = SubparametroForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("subparametro")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = SubparametroForm() 
     context={
@@ -376,9 +233,10 @@ def editar_subparametro(request, pk):
         form = SubparametroForm(request.POST, instance=subparametro)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("subparametro")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = SubparametroForm(instance=subparametro) 
     context={
@@ -397,9 +255,10 @@ def titulo_parametro(request):
         form = Titulo_ParametroForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("titulo_parametro")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = Titulo_ParametroForm() 
     context={
@@ -418,10 +277,10 @@ def editar_titulo_parametro(request, pk):
         form = Titulo_ParametroForm(request.POST, instance=titulo_parametro)
         if form.is_valid():
             form.save()
-           
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("titulo_parametro")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = Titulo_ParametroForm(instance=titulo_parametro)
 
@@ -442,9 +301,10 @@ def crear_metodologia(request):
         form = MetodologiaForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("crear_metodologia")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = MetodologiaForm() 
     context={
@@ -464,9 +324,10 @@ def editar_metodologia(request, pk):
         form = MetodologiaForm(request.POST, instance=crear_metodologia)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("crear_metodologia")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = MetodologiaForm(instance=crear_metodologia) 
     context={
@@ -486,9 +347,10 @@ def definir_estado(request):
         form = EstadoProtocoloForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("definir_estado")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = EstadoProtocoloForm() 
     context={
@@ -508,9 +370,10 @@ def editar_definir_estado(request,pk):
         form = EstadoProtocoloForm(request.POST, instance=definir_estado)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("definir_estado")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = EstadoProtocoloForm(instance=definir_estado) 
     context={
@@ -528,9 +391,10 @@ def crear_ensayo(request):
         form = crear_ensayoForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("crear_ensayo")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = crear_ensayoForm() 
     context={
@@ -549,9 +413,10 @@ def editar_ensayo(request, pk):
         form = crear_ensayoForm(request.POST, instance=crear_ensayo)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("crear_ensayo")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = crear_ensayoForm(instance=crear_ensayo) 
     context={
@@ -572,9 +437,10 @@ def insumosDelProceso(request):
         form = ViabilidadForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("insumosDelProceso")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = ViabilidadForm() 
     context={
@@ -594,9 +460,10 @@ def editar_insumosDelProceso(request, pk):
         form = ViabilidadForm(request.POST, instance=viabilidad)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("insumosDelProceso")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = ViabilidadForm(instance=viabilidad) 
     context={
@@ -614,9 +481,10 @@ def crear_cliente(request):
         form = clienteForm(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
             return redirect("crear_cliente")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = clienteForm() 
     context={
@@ -636,9 +504,10 @@ def editar_cliente(request, pk):
         form = clienteForm(request.POST, instance=crear_cliente)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
             return redirect("crear_cliente")
         else:
-             print("Error")  
+             messages.error(request, "Por favor revisa los datos ingresados")
     else:
         form = clienteForm(instance=crear_cliente) 
     context={
@@ -664,6 +533,18 @@ def detalles_protocolo_metodos(request):
     return render(request, "protocolo_metodos/detalles_protocolo_metodos.html", context)
 
 @login_required
+def muestras(request):
+    titulo = "Muestras de Análisis"
+    muestras=Muestras_y_Placebos.objects.all()
+    #secuencia_registro = Secuencias.objects.filter(status="Registrada").count()
+    context = {
+
+        "titulo": titulo,
+        "muestras": muestras,
+    }
+    return render(request, "protocolo_metodos/muestras.html", context)
+
+@login_required
 def ingresar_muestras(request):
     titulo="Ingreso de Muestras"
     ingresar_muestras=Muestras_y_Placebos.objects.all()
@@ -675,7 +556,7 @@ def ingresar_muestras(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Registro creado satisfactoriamente")
-            return redirect("ingresar_muestras")
+            return redirect("muestras")
         else:
              messages.error(request, "por favor, revise los datos ingresados") 
     else:
@@ -687,6 +568,261 @@ def ingresar_muestras(request):
     }
 
     return render(request, "protocolo_metodos/ingresar_muestras.html", context)
+
+@login_required
+def editar_muestras(request, pk):
+    titulo="Editar Muestras"
+    muestra=Muestras_y_Placebos.objects.get(id=pk)
+    muestras=Muestras_y_Placebos.objects.all()
+
+    if request.method == "POST":
+         form = ingresar_muestrasForm(request.POST, instance=muestra)
+         #messages.success(request, "Editada con exito")
+         if form.is_valid():
+           form.save()
+           messages.success(request, "Registro editado correctamente")
+           return redirect("muestras")
+         else:
+           messages.error(request, "Por favor revisa los datos ingresados")  
+    else:
+          form = ingresar_muestrasForm(instance=muestra)
+    context={
+    "titulo":titulo,
+    "form":form,
+    "protocolo_metodo": muestra,
+    "protocolo_metodos":muestras,
+   
+}
+    return render(request, "protocolo_metodos/editar_muestras.html", context)
+
+@login_required
+def sistemas(request):
+    titulo="Sistemas"
+    sistemas=Sistema.objects.all()
+    if request.method == "POST":
+        form = sistemaForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Sistema creado satisfactoriamente")
+            return redirect("sistemas")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = sistemaForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "sistemas":sistemas,
+        
+    }
+    return render(request, "protocolo_metodos/crear_sistemas.html", context)
+
+@login_required
+def editar_sistemas(request, pk):
+    titulo="Editar Sistemas"
+    sistemas=Sistema.objects.get(id=pk)
+    if request.method == "POST":
+        form = sistemaForm(request.POST, instance=sistemas)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Sistema editado satisfactoriamente")
+            return redirect("sistemas")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = sistemaForm(instance=sistemas) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "crear_cliente":crear_cliente,
+        
+    }
+    return render(request, "protocolo_metodos/crear_sistemas.html", context)
+
+
+
+@login_required
+def celdas(request):
+    titulo="Celdas"
+    celdas=Celda.objects.all()
+    responsable = User.objects.all
+    if request.method == "POST":
+        form = CeldaForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Celda creada satisfactoriamente")
+            return redirect("celdas")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = CeldaForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "celdas":celdas,
+        "responsable":responsable,
+        
+    }
+    return render(request, "protocolo_metodos/celdas.html", context)
+
+@login_required
+def editar_celdas(request, pk):
+    titulo="Editar Celdas"
+    responsable = User.objects.all
+    celdas=Celda.objects.get(id=pk)
+    if request.method == "POST":
+        form = CeldaForm(request.POST, instance=celdas)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Celda editada satisfactoriamente")
+            return redirect("celdas")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = CeldaForm(instance=celdas) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "celdas":celdas,
+        responsable:responsable,
+        
+    }
+    return render(request, "protocolo_metodos/celdas.html", context)
+
+@login_required
+def metodos(request):
+    titulo="Metodos"
+    metodos=Metodo.objects.all()
+    if request.method == "POST":
+        form = MetodoForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Método creado satisfactoriamente")
+            return redirect("metodos")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = MetodoForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "metodos":metodos,
+        
+    }
+    return render(request, "protocolo_metodos/metodos.html", context)
+
+@login_required
+def editar_metodos(request, pk):
+    titulo="Editar metodos"
+    metodos=Metodo.objects.get(id=pk)
+    if request.method == "POST":
+        form = MetodoForm(request.POST, instance=metodos)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Método editado satisfactoriamente")
+            return redirect("metodos")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = MetodoForm(instance=metodos) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "metodos":metodos,
+        
+    }
+    return render(request, "protocolo_metodos/metodos.html", context)
+
+@login_required
+def tipo_muestra(request):
+    titulo="Tipo de Muestras"
+    tipo_muestra=Tipo_muestra.objects.all()
+    if request.method == "POST":
+        form = tipo_muestrasForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Tipo de muestra creada satisfactoriamente")
+            return redirect("tipo_muestra")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = tipo_muestrasForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "tipo_muestra":tipo_muestra,
+        
+    }
+    return render(request, "protocolo_metodos/tipo_muestra.html", context)
+
+@login_required
+def editar_tipo_muestra(request, pk):
+    titulo="Editar Tipo de Muestras"
+    tipo_muestra=Tipo_muestra.objects.get(id=pk)
+    if request.method == "POST":
+        form = tipo_muestrasForm(request.POST, instance=tipo_muestra)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Tipo de muestra editada satisfactoriamente")
+            return redirect("tipo_muestra")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = tipo_muestrasForm(instance=tipo_muestra) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "tipo_muestra":tipo_muestra,
+        
+    }
+    return render(request, "protocolo_metodos/tipo_muestra.html", context)
+
+@login_required
+def etapas(request):
+    titulo="Etapas"
+    etapas=Etapa.objects.all()
+    ensayo=Ensayo.objects.all()
+    if request.method == "POST":
+        form = EtapaForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Etapa creada satisfactoriamente")
+            return redirect("etapas")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = EtapaForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "etapas":etapas,
+        "ensayo":ensayo,
+        
+    }
+    return render(request, "protocolo_metodos/etapas.html", context)
+
+@login_required
+def editar_etapas(request, pk):
+    titulo="Editar Etapas de Muestras"
+    etapas=Etapa.objects.get(id=pk)
+    if request.method == "POST":
+        form = EtapaForm(request.POST, instance=etapas)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Etapa editada satisfactoriamente")
+            return redirect("etapas")
+        else:
+             messages.error(request, "Por favor, revisa los datos ingresados")
+    else:
+        form = EtapaForm(instance=etapas) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "etapas":etapas,
+        
+    }
+    return render(request, "protocolo_metodos/etapas.html", context)
+
 
 
 

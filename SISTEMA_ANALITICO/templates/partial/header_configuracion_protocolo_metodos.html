@@ -16,6 +16,14 @@
             <a class="dropdown-item" href="{% url 'titulo_parametro' %}">Título Parámetro</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle btn-primary btn-outline-primary" data-toggle="dropdown" href="#" role="button" 
+             aria-haspopup="true" aria-expanded="false">Muestras</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'tipo_muestra' %}">Tipo de muestra</a>
+            <a class="dropdown-item" href="{% url 'etapas' %}">Etapas del proceso</a>
+          </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link btn-primary btn-outline-primary" href="{% url 'definir_estado' %}">Estado</a>
           </li>
@@ -30,6 +38,15 @@
           </li>
           <li class="nav-item">
             <a class="nav-link btn-primary btn-outline-primary" href="{% url 'crear_cliente' %}">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-primary btn-outline-primary" href="{% url 'sistemas' %}">Sistemas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-primary btn-outline-primary" href="{% url 'celdas' %}">Celdas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-primary btn-outline-primary" href="{% url 'metodos' %}">Metodos</a>
           </li>
       </ul>
     </div>
