@@ -34,6 +34,7 @@ def inicioAdmin(request):
 def adm_inicio(request):
      #GRAFICO PARA PROTOCOLOS DE METODOS FINALIZADOS
      registro_total_protocolo_metodos = Protocolos.objects.count()
+     
      registro_total_protocolo_metodos_reales= registro_total_protocolo_metodos - 1
      dataset = Protocolos.objects \
        .values('fecha_final__month')\

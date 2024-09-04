@@ -18,6 +18,8 @@ urlpatterns=[
     path("metodos/", views.metodos, name="metodos"),
     path("tipo_muestra/", views.tipo_muestra, name="tipo_muestra"),
     path("etapas/", views.etapas, name="etapas"),
+    path("invalidar_secuencias/", views.invalidar_secuencias, name="invalidar_secuencias"),
+    path("viavilidad_proceso/", views.viavilidad_proceso, name="viavilidad_proceso"),
 
 
 
@@ -42,7 +44,8 @@ urlpatterns=[
     path("editar_metodos/<int:pk>/", views.editar_metodos, name="editar_metodos"),
     path("editar_tipo_muestra/<int:pk>/", views.editar_tipo_muestra, name="editar_tipo_muestra"),
     path("editar_etapas/<int:pk>/", views.editar_etapas, name="editar_etapas"),
-
+    path("editar_invalidar_secuencias/<int:pk>/", views.editar_invalidar_secuencias, name="editar_invalidar_secuencias"),
+    path("editar_viavilidad_proceso/<int:pk>/", views.editar_viavilidad_proceso, name="editar_viavilidad_proceso"),
 
 
 

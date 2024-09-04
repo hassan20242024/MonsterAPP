@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 
-# Application definition
+# Application definition 
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -95,7 +95,7 @@ INSTALLED_APPS = [
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/incia-sesion/'
+LOGOUT_REDIRECT_URL = '/MonsterAPP/'
 
 # Bootstrap 5 Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

@@ -24,11 +24,16 @@
             <a class="dropdown-item" href="{% url 'etapas' %}">Etapas del proceso</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle btn-primary btn-outline-primary" data-toggle="dropdown" href="#" role="button" 
+             aria-haspopup="true" aria-expanded="false">Insumos del Proceso</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'insumosDelProceso' %}">Insumos Protocolo de Métodos</a>
+            <a class="dropdown-item" href="{% url 'viavilidad_proceso' %}">Insumos Validación de Proceso</a>
+          </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link btn-primary btn-outline-primary" href="{% url 'definir_estado' %}">Estado</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn-primary btn-outline-primary" href="{% url 'insumosDelProceso' %}">Insumos del Proceso</a>
           </li>
           <li class="nav-item">
             <a class="nav-link btn-primary btn-outline-primary" href="{% url 'crear_ensayo' %}">Ensayo</a>
@@ -47,6 +52,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link btn-primary btn-outline-primary" href="{% url 'metodos' %}">Metodos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-primary btn-outline-primary" href="{% url 'invalidar_secuencias' %}">Invalidez de Secuencias</a>
           </li>
       </ul>
     </div>

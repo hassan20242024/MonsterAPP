@@ -20,7 +20,7 @@ import datetime
 
     #    return str(self.estado_protocolo_proceso()) 
 
-class Viabilidad(models.Model):
+class ViabilidadProceso(models.Model):
    
     nombre_viabilidad=models.CharField(verbose_name="Insumos del Proceso", max_length=90, null=True, blank=False, unique=True)
     class Condicion(models.TextChoices):
@@ -41,7 +41,7 @@ class Proceso(models.Model):
      muestras=models.ManyToManyField(Muestras_y_Placebos, blank=False)
      metodologia=models.ForeignKey(Metodologia, on_delete=models.CASCADE, verbose_name="metodologia", null=True, blank=False,  max_length=90)
      #parametro=models.ManyToManyField(to=Parametro, blank=False, related_name="parametro")
-     Insumos_del_Proceso=models.ManyToManyField(to=Viabilidad)
+     Insumos_del_Proceso=models.ManyToManyField(to=ViabilidadProceso)
      cliente=models.ForeignKey(to=Cliente, on_delete=models.CASCADE, verbose_name="Cliente", null=True, blank=False)
      metodo=models.ForeignKey(to=Metodo, on_delete=models.CASCADE, verbose_name="Metodo de referencia", null=True, blank=False)
      estado_del_proceso=models.ForeignKey(to=EstadoProtocolo, on_delete=models.CASCADE, verbose_name="Estado del proceso", null=True, blank=False)

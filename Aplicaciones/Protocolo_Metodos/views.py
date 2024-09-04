@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 
 from .models import Protocolos,Subparametro, Parametro, Metodologia,EstadoProtocolo,Viabilidad,Titulo_Parametro,Celda,Muestras_y_Placebos,Ensayo, Cliente, Celda, Metodo, Tipo_muestra, Etapa
-from Aplicaciones.Secuencias.models import Sistema
+from Aplicaciones.Secuencias.models import Sistema, Invalidar_Secuencia
+from Aplicaciones.Protocolo_Muestras.models import ViabilidadProceso
 from django.contrib.auth.models import User
-from .forms import ProtocolosForm,ParametroForm, MetodologiaForm, EstadoProtocoloForm, crear_ensayoForm,ViabilidadForm,sistemaForm, SubparametroForm,Titulo_ParametroForm, ingresar_muestrasForm, clienteForm, CeldaForm, MetodoForm, tipo_muestrasForm, EtapaForm
+from .forms import ProtocolosForm,ParametroForm, MetodologiaForm, EstadoProtocoloForm, crear_ensayoForm,ViabilidadForm,sistemaForm, SubparametroForm,Titulo_ParametroForm, ingresar_muestrasForm, clienteForm, CeldaForm, MetodoForm, tipo_muestrasForm, EtapaForm, invalidar_secuenciasForm, viavilidad_procesoForm
 from Aplicaciones.Secuencias.models import Secuencias
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -822,6 +823,98 @@ def editar_etapas(request, pk):
         
     }
     return render(request, "protocolo_metodos/etapas.html", context)
+
+@login_required
+def invalidar_secuencias(request):
+    titulo="Causas de Invalidez de Secuencias"
+    invalidar_secuencias=Invalidar_Secuencia.objects.all()
+   
+    if request.method == "POST":
+        form = invalidar_secuenciasForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
+            return redirect("invalidar_secuencias")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = invalidar_secuenciasForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "invalidar_secuencias":invalidar_secuencias,
+       
+        
+    }
+    return render(request, "protocolo_metodos/invalidar_secuencias.html", context)
+
+@login_required
+def editar_invalidar_secuencias(request, pk):
+    titulo="Editar Invalidar Secuencias"
+    invalidar_secuencias=Invalidar_Secuencia.objects.get(id=pk)
+    if request.method == "POST":
+        form = invalidar_secuenciasForm(request.POST, instance=invalidar_secuencias)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
+            return redirect("invalidar_secuencias")
+        else:
+             messages.error(request, "Por favor, revisa los datos ingresados")
+    else:
+        form = invalidar_secuenciasForm(instance=invalidar_secuencias) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "invalidar_secuencias":invalidar_secuencias,
+        
+    }
+    return render(request, "protocolo_metodos/invalidar_secuencias.html", context)
+
+@login_required
+def viavilidad_proceso(request):
+    titulo="Viavilidad Proceso"
+    viavilidad_proceso=ViabilidadProceso.objects.all()
+   
+    if request.method == "POST":
+        form = viavilidad_procesoForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro creado satisfactoriamente")
+            return redirect("viavilidad_proceso")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+    else:
+        form = viavilidad_procesoForm() 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "viavilidad_proceso":viavilidad_proceso,
+       
+        
+    }
+    return render(request, "protocolo_metodos/viavilidad_proceso.html", context)
+
+@login_required
+def editar_viavilidad_proceso(request, pk):
+    titulo="Editar Viavilidad Proceso"
+    viavilidad_proceso=ViabilidadProceso.objects.get(id=pk)
+    if request.method == "POST":
+        form = viavilidad_procesoForm(request.POST, instance=viavilidad_proceso)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro editado satisfactoriamente")
+            return redirect("viavilidad_proceso")
+        else:
+             messages.error(request, "Por favor, revisa los datos ingresados")
+    else:
+        form = viavilidad_procesoForm(instance=viavilidad_proceso) 
+    context={
+        "titulo":titulo,
+        "form":form,
+        "viavilidad_proceso":viavilidad_proceso,
+        
+    }
+    return render(request, "protocolo_metodos/viavilidad_proceso.html", context)
 
 
 

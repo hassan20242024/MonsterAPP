@@ -9,7 +9,8 @@ from django_select2 import forms as s2forms
 
 
 from .models import Protocolos, Parametro, Metodologia, EstadoProtocolo,Ensayo,Viabilidad, Subparametro,Titulo_Parametro, Muestras_y_Placebos, Cliente, Celda, Metodo, Tipo_muestra, Etapa
-from Aplicaciones.Secuencias.models import Sistema
+from Aplicaciones.Secuencias.models import Sistema, Invalidar_Secuencia
+from Aplicaciones.Protocolo_Muestras.models import ViabilidadProceso
 
 class ProtocolosForm(forms.ModelForm):
     nombre = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'placeholder': 'Título del Protocolo'}))
@@ -105,7 +106,17 @@ class tipo_muestrasForm(forms.ModelForm):
 class EtapaForm(forms.ModelForm):
     class Meta:
         model=Etapa
-        exclude=["condicion"]                     
+        exclude=["condicion"] 
+
+class invalidar_secuenciasForm(forms.ModelForm):
+    class Meta:
+        model=Invalidar_Secuencia
+        exclude=["condicion"]  
+
+class viavilidad_procesoForm(forms.ModelForm):
+    class Meta:
+        model=ViabilidadProceso
+        exclude=["condicion"]                                     
 
 
 

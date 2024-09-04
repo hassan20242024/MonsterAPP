@@ -33,7 +33,7 @@
               </div>
               </div>
           </div><br>
-            <div class="card-body">
+            <div class="card-body table-responsive">
               <table class="table  table-bordered display" id="example3">
                 <thead class="">
                     <tr class="text-center">
@@ -50,7 +50,7 @@
                         <td class="text-center">{{item.tipo_muestra}}</td>
                         <td class="text-center">{{item.condicion}}</td>
                         <td>
-                            <a href="{% url 'editar_cliente' item.pk %}" class="btn btn-primary btn-circle text-center" data-bs-target="#modal_parametros_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-edit"></span>Editar</a>
+                            <a href="{% url 'editar_tipo_muestra' item.pk %}" class="btn btn-primary btn-circle text-center" data-bs-target="#modal_parametros_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-edit"></span>Editar</a>
                         </td>
                     </tr>
                     <!-- Formulario-Edicion Modal -->

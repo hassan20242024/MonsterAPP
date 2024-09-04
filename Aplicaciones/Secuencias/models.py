@@ -113,10 +113,20 @@ class Secuencias(models.Model):
     imprimir=models.ForeignKey(to=usuario_impresion, on_delete=models.CASCADE, verbose_name="Impresa por", null=True, blank=True)
     reportar=models.ForeignKey(to=usuario_reporte, on_delete=models.CASCADE, verbose_name="Reportada por", null=True, blank=True)
     auditar=models.ForeignKey(to=usuario_auditor, on_delete=models.CASCADE, verbose_name="Auditada por", null=True, blank=True)
-   
     class Meta:
-       unique_together = ("protocolo", "parametro_sq", "fecha_Invalidez", "muestras")
-       unique_together = ("protocolo_proceso", "muestras", "fecha_Invalidez", "parametro_sq")
+        constraints = [
+            models.UniqueConstraint(fields=['protocolo', 'parametro_sq', 'fecha_Invalidez'], name='unique_intro'),
+            #models.UniqueConstraint(fields=['protocolo_proceso', 'muestras', 'fecha_Invalidez'], name='unique_intro_nue'),
+        ]
+    class Meta:
+        constraints = [
+            #models.UniqueConstraint(fields=['protocolo', 'parametro_sq', 'fecha_Invalidez'], name='unique_intro'),
+            models.UniqueConstraint(fields=['protocolo_proceso', 'muestras', 'fecha_Invalidez', 'parametro_sq', 'protocolo'], name='unique_intro_nue'),
+        ]    
+   
+    #class Meta:
+       #UniqueConstraint  = ("protocolo", "parametro_sq", "fecha_Invalidez")
+       #UniqueConstraint  = ("protocolo_proceso", "muestras", "fecha_Invalidez")
 
 
     #def clean_end_time(self):

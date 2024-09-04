@@ -42,7 +42,7 @@
                       </div>
                       </div>
                   </div><br>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                       <table class="table  table-bordered display" id="example3">
                         <thead class="" >
                             <tr class="">
@@ -67,10 +67,10 @@
                                 <td >{{item.nombre}} </td>
                                 <td>{{item.sistema}}</td>
                                 <td >
-                                  {% if item.protocolo.id > 67 %}
+                                  {% if item.protocolo.id > 4 %}
                                   {{item.protocolo}}
                                   {% endif %}
-                                  {% if item.protocolo_proceso.id > 9 %}
+                                  {% if item.protocolo_proceso.id > 5 %}
                                   {{item.protocolo_proceso}}
                                   {% endif %}
                                   {% if item.metodo.id > 2 %}
@@ -78,18 +78,20 @@
                                   {% endif %}
                                 </td>
                               
-                                <td> {% if item.parametro_sq.id == 25 %}
+                                <td> {% if item.parametro_sq.id == 1 %}
                                   No Aplica
                                   {% else %}
                                   {{item.parametro_sq}}
                                   <a href="{% url 'duplicar_secuencias' item.pk %}" title="Agregar nuevo parámetro" class=" text-center"  data-bs-target="#duplicar_secuencias_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
                                   {% endif %}
                                 </td>
-                                <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 16 %}
-                                  No Aplica
+                                <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 1 %}
+                                  {% for p in item.protocolo.muestras_y_Placebos.all %}
+                            Código: {{p.codigo_muestra_producto}}. 
+                            <div class="accordian-body collapse" id="demo1"> {{p.nombre_muestra}} {{p.lote_muestra}}</div>{% endfor %}
                                   {% else %}
                                   <div class="accordian-body collapse" id="demo1"> {{item.muestras.nombre_muestra}} {{item.muestras.lote_muestra}} {{item.muestras.codigo_muestra_producto}} </div>Etapa: {{item.muestras.etapa}}
-                                  <a href="{% url 'duplicar_secuencias_muestras' item.pk %}" title="Agregar nuevo parámetro" class="text-center"  data-bs-target="#duplicar_secuencias_muestras_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
+                                  <a href="{% url 'duplicar_secuencias_muestras' item.pk %}" title="Agregar muestra" class="text-center"  data-bs-target="#duplicar_secuencias_muestras_{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-plus-circle" ></span></a>
                                   {% endif %}
                                 </td>
                                 
@@ -1221,7 +1223,7 @@ if (protocolo < 2 && protocolo_proceso < 2 && metodo < 2) {
   alert("Debe seleccionar un método o protocolo!");
 e.preventDefault();}
 if (protocolo >= 2 && muestras >= 2) { 
-  alert("Debe seleccionar la opción 'Ninguna (N.A)' en el campo de muestras!");
+  alert("Debe seleccionar la opción '-Ninguna-' en el campo de muestras!");
 e.preventDefault();}
 if (protocolo_proceso >= 2 && muestras < 2) { 
   alert("Debe seleccionar una muestra valida!");

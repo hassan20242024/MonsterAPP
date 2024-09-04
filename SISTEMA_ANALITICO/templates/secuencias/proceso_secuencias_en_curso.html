@@ -22,7 +22,7 @@
             <div class="container-fluid">
           
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table  table-bordered " id="example3">  <thead class="" >
                     <tr class="text-center">
                         <th class="all text-center" style="display: None;">Fecha/Hora Inicio</th>
@@ -43,17 +43,17 @@
                         <td>{{item.nombre}} &nbsp; <a href="" title="Revisar secuencia" class="text-black text-center"  data-bs-target="#observacion_secuencia{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-camera-retro" ></span></a>
                         </td>
                         <td>{{item.sistema}}</td>
-                        <td >{% if item.protocolo.id > 67 %}
+                        <td >{% if item.protocolo.id > 4 %}
                           {{item.protocolo}}
                           {% endif %}
-                          {% if item.protocolo_proceso.id > 9 %}
+                          {% if item.protocolo_proceso.id > 5 %}
                           {{item.protocolo_proceso}}
                           {% endif %}
                           {% if item.metodo.id > 2 %}
                           {{item.metodo}}
                           {% endif %}</td>
                         <td >{{item.parametro_sq}}</td>
-                        <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 16 %}
+                        <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle" colspan="" class="hiddenRow"> {% if item.muestras.id == 1 %}
                           {% for p in item.protocolo.muestras_y_Placebos.all %}
                             Código: {{p.codigo_muestra_producto}}. 
                             <div class="accordian-body collapse" id="demo1"> {{p.nombre_muestra}} {{p.lote_muestra}}</div>{% endfor %}
@@ -522,10 +522,10 @@
                     <b class="">Sistema usado</b> <a class="float-right">{{item.sistema}}</a>
                     </li>
                     <li class="list-group-item">
-                    <b>Código protocolo/método</b> <a class="float-right">{% if item.protocolo.id > 67 %}
+                    <b>Código protocolo/método</b> <a class="float-right">{% if item.protocolo.id > 4 %}
                       {{item.protocolo}}
                       {% endif %}
-                      {% if item.protocolo_proceso.id > 9 %}
+                      {% if item.protocolo_proceso.id > 5 %}
                       {{item.protocolo_proceso}}
                       {% endif %}
                       {% if item.metodo.id > 2 %}
@@ -541,7 +541,7 @@
              
                   </li>
                     <li class="list-group-item">
-                    <b>Patámetro</b> <a class="float-right">{{item.parametro_sq}}</a>
+                    <b>Parámetro</b> <a class="float-right">{{item.parametro_sq}}</a>
                     </li>
                     <li class="list-group-item">
                       {% if item.status == "Revisada" %}
@@ -595,7 +595,7 @@
 
                           </div>
                           <div class="card-body">
-                            {% if item.muestras.id == 16 %}
+                            {% if item.muestras.id == 1 %}
                             {% for p in item.protocolo.muestras_y_Placebos.all %}
                             <li class="list-group" >{{p}}.</li>
                             {% endfor %}
