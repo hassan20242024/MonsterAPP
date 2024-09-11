@@ -136,9 +136,11 @@ def adm_inicio(request):
      chart2 = {
         'chart': {'type': 'bar'},
         'title': {'text': ''},
+         "credits": "false",
         'xAxis': {'categories': categories},
         'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series]
     } 
+    
      dump2 = json.dumps(chart2)   
      titulo="Tablero principal"
 
@@ -200,6 +202,7 @@ def adm_inicio(request):
      chart3 = {
         'chart': {'type': 'bar'},
         'title': {'text': ''},
+         "credits": "false",
         'xAxis': {'categories': categories},
         'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series]
     } 

@@ -7,93 +7,112 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!--Advanced multiselect esasy-->
-<link href="https://www.jqueryscript.net/demo/advanced-multiselect-easy/easySelectStyle.css" rel="stylesheet" />
 <script src="https://www.jqueryscript.net/demo/advanced-multiselect-easy/easySelect.js"></script>
-  <div class="container-fluid">
-    <div class="card-body"><br>
-      <h4 class="">Creación de protocolos</h4>
-    </div>
+  <div class="container-fluid"><br>
     
+    
+           <!-- Using a local copy -->
+
+<!-- Include the default stylesheet -->
+
+
+<!-- Or using a CDN -->
+
+<!-- Include the default stylesheet -->
+   
+            
     <div class="row">
         <!---------------------------------------Inicio Columna 1------------------------------------------------------>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header" >
-            <h1 class="card-title">Registrar Protocolos</h1>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-            </div>
-          </div>
-          <div class="card-body">
+      <div class="">
+        <div class="card col-12 col-lg-7" style="background-color: #1b3d70c2;margin: auto;">
+          <h5 class="text-white text-center"><br>Crear Protocolo de Métodos</h5>
+     </div>
+        <div class="card col-12 col-lg-7" style="margin: auto;">
+          <div class="row gy-1 gy-xl-2 p-4 p-xl-4">
             <form action=""  id="myModelForm" method="POST">
               {% csrf_token %}
-              {{ form.fecha_ingreso|as_crispy_field  }}
-              {{ form.codigo|as_crispy_field  }}
+                   
+              <div class="row">
+                <div class="col-md-6">
+                  {{ form.fecha_ingreso|as_crispy_field  }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.codigo|as_crispy_field  }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  {{ form.cliente|as_crispy_field  }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.ensayo|as_crispy_field  }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  {{ form.celda|as_crispy_field  }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.metodologia|as_crispy_field  }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  {{ form.metodo|as_crispy_field  }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.estado_protocolo|as_crispy_field  }}
+                </div>
+              </div>
               {{ form.nombre|as_crispy_field  }}
-              {{ form.cliente|as_crispy_field  }}
-              {{ form.ensayo|as_crispy_field  }}
-              {{ form.celda|as_crispy_field  }}
               
+
+            {{ form.Insumos_del_Proceso|as_crispy_field  }}
+            <div class="card col-md-12">
+              {{ form.parametro|as_crispy_field  }}
+            </div>
+            <div class="card col-md-12" >
+              {{ form.muestras_y_Placebos|as_crispy_field  }}
+            </div>
+           
+            {{ form.observaciones|as_crispy_field  }}
+            <div class="modal-footer">
+              <a href="{% url 'muestras' %}" onclick='salir(event)' style="background-color: #7d848ec2;" class="btn btn-dark" >Cancelar</a>
+              <button type="submit" onclick='confirmar(event)' class="btn btn-primary" style="background-color: #1b3d70c2;" >Guardar</button>
+            </div>
           </div>
+          
         </div>
       </div>
       <!---------------------------------------------Inicio Columna 2------------------------------------------------------>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h1 class="card-title">Registrar Protocolos</h1>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-            </div>
-          </div>
-          <div class="card-body">
-            {{ form.metodologia|as_crispy_field  }}
-            {{ form.parametro|as_crispy_field  }}
-            {{ form.metodo|as_crispy_field  }}
-            {{ form.Insumos_del_Proceso|as_crispy_field  }}
-            {{ form.estado_protocolo|as_crispy_field  }}
-            {{ form.observaciones|as_crispy_field  }}
-          </div>
-        </div>
-      </div>
-     <div class="container-fluid">
-      <div class="card">
-        <div class="card-body">
-          {{ form.muestras_y_Placebos|as_crispy_field  }}
-        </div>
-  
-       </div>
-     </div>
+     
     
-        <div class=""><input type="submit"  onclick='confirmar(event)' name='reservar' id='reservar' style="background-color: #1b3d70c2;"  value="GUARDAR" class="btn btn-dark btn-block" /></div><br><br>
-        <div><a href="{% url 'adm_inicio' %}" onclick='salir(event)' class="btn btn-dark btn-block" style="background-color: #7d848ec2;" >CANCELAR</a>
-
-      </div>
+       
     </form>
       {% block scripts %}
       <script>
-        $("#id_muestras_y_Placebos").select2({
-theme: "bootstrap-5",
-placeholder: "Seleccione",
-
-
-});
+      
         $("#id_ensayo").select2({
 theme: "bootstrap-5",
 placeholder: "Seleccione",
-
+});
+$("#id_metodo").select2({
+theme: "bootstrap-5",
+placeholder: "Seleccione",
 });
 $("#id_cliente").select2({
 theme: "bootstrap-5",
 placeholder: "Seleccione",
 });
       </script>
+      <script>
+        $('select').multipleSelect();
+    </script>
 <script> 
 $(document).ready(function() {
 $('#id_parametro').css('width', '100%').multiselect(
 {
+  
 enableFiltering: true,
 filterBehavior: 'text',
 buttonWidth: '100%',
@@ -107,12 +126,39 @@ maxHeight: 300
 );
 });
 </script>
+
+s
+
+
+<script> 
+  $(document).ready(function() {
+  $('#id_muestras_y_Placebos').css('width', '100%').multiselect(
+  {
+  enableFiltering: true,
+  
+  filterBehavior: 'text',
+  buttonWidth: '100%',
+  enableClickableOptGroups: true,
+  enableCollapsibleOptGroups: true,
+  nonSelectedText: 'Seleccionar muestras',
+  enableCaseInsensitiveFiltering: true,
+  includeSelectAllOption: true,
+  maxHeight: 300,
+  
+  
+
+  }
+  );
+  });
+  </script>
        {% endblock scripts %}
     </div>
   </div>
 
  <!-- Validación de campos -->
  <script>
+
+  
   function confirmar(event) { 
     
     event.preventDefault();
@@ -158,4 +204,5 @@ maxHeight: 300
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" rel="stylesheet"/>
+
   {% endblock contenido %}

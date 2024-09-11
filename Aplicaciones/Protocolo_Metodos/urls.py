@@ -32,6 +32,7 @@ urlpatterns=[
     path("muestras/", views.muestras, name="muestras"),
     path("ingresar_muestras/", views.ingresar_muestras, name="ingresar_muestras"),
     path("editar_muestras/<int:pk>/", views.editar_muestras, name="editar_muestras"),
+    path("duplicar_muestras/<int:pk>/", views.duplicar_muestras, name="duplicar_muestras"),
     path("editar_titulo_parametro/<int:pk>/", views.editar_titulo_parametro, name="editar_titulo_parametro"),
     path("editar_subparametro/<int:pk>/", views.editar_subparametro, name="editar_subparametro"),
     path("editar_definir_estado/<int:pk>/", views.editar_definir_estado, name="editar_definir_estado"),

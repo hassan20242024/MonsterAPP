@@ -169,7 +169,11 @@ class Muestras_y_Placebos(models.Model):
     class Condicion(models.TextChoices):
         ACTIVO = "Activo", "ACTIVO"
         PASIVO = "Pasivo", "PASIVO"
-    condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion")  
+    condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion") 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['lote_muestra', 'etapa'], name='unique_intro'),
+        ] 
     def nombre_muestras_y_placebos(self):
          return "{} {} {} {} {} {} {} {} {} {} {}".format(self.codigo_muestra_interno, self.nombre_muestra,(","), ("Código:"), self.codigo_muestra_producto,(","), ("Lote:"), self.lote_muestra,(","), ("Etapa:"), self.etapa )
     def __str__(self):    

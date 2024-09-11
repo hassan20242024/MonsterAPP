@@ -72,7 +72,7 @@ class ViabilidadForm(forms.ModelForm):
 
 class ingresar_muestrasForm(forms.ModelForm):
     fecha_ingreso=forms.DateField(widget=NumberInput(attrs={'type': 'date'}))
-    observaciones_muestras = forms.CharField(widget=forms.Textarea(attrs={'rows':5}))
+    observaciones_muestras = forms.CharField(widget=forms.Textarea(attrs={'rows':4}))
     class Meta:
         fields = '__all__'
         model=Muestras_y_Placebos

@@ -26,7 +26,7 @@
           <div class="inner">
             <h3>{{registro_total_protocolo_metodos_reales}}</h3>
 
-            <p>Protocolo de Métodos</p>
+            <p>Protocolos de Métodos</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -194,7 +194,9 @@
 {% block javascripts %}
 <!--Graficos-->
 <script type="">
-    Highcharts.chart('containers', {{ chart2|safe }});
+    Highcharts.chart('containers', {{ chart2|safe }}
+      
+    );
   </script>
   <script type="">
     Highcharts.chart('containersPr', {{ chart3|safe }});
@@ -203,6 +205,9 @@
 
 <script type="">
 Highcharts.chart('container', {
+  credits: {
+    enabled: false
+},
       chart: {
           type: 'column'
       },
@@ -231,6 +236,10 @@ Highcharts.chart('container', {
 
 <script type="">
   Highcharts.chart('containerPr', {
+    credits: {
+    enabled: false
+},
+    
         chart: {
             type: 'column'
         },

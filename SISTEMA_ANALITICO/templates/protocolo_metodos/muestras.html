@@ -9,6 +9,7 @@
 <!-- Input Material -->
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Input Material -->
 <!-- Data-table-->
 <!-- Data-table-->
@@ -19,7 +20,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="pagetitle"><br>
-                <h4 class="">Muestras de Anáisis</h4><br>
+                <h4 class="">Gestión de Muestras de Análisis</h4><br>
               </div>
 
         </div>
@@ -64,10 +65,10 @@
                 <th class="text-center">CIM/LIMS</th>
                 <th class="text-center">Código Producto</th>
                 <th class="text-center">Observaciones</th>
-                {% if perms.auth.view_user %}
+               
             <th class="all text-center">
               Opciones
-            </th>{% endif %}
+            </th>
             </tr>
             </thead>
             <tbody id="myTable">
@@ -82,14 +83,19 @@
             <td>{{p.codigo_muestra_interno}}</td>
             <td>{{p.codigo_muestra_producto}}</td>
             <td>{{p.observaciones_muestras}}</td>
-            {% if perms.auth.view_user %}
             <td class="all text-center">
-            <a class="btn btn-primary btn-sm" href= "/editar_muestras/{{p.pk}}"> 
-            <i class="fas fa-pencil-alt">
-            </i> Editar
-            </a>
-          
-            </td>  {% endif %}
+              <a class="btn btn-primary btn-sm" href="/duplicar_muestras/{{p.pk}}" title="Guardar como">
+                <i class="fa fa-clone" aria-hidden=""></i> </a>
+              {% if perms.auth.view_user %}
+              <a class="btn btn-info btn-sm" href= "/editar_muestras/{{p.pk}}" title="editar"> 
+              <i class="fas fa-pencil-alt">
+              </i> 
+             
+              </a>
+              {% endif %}
+              </td>
+
+              
            
             </tr>
              {% endif %}

@@ -6,6 +6,10 @@
 {% load bootstrap5 %}
 <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/contacts/contact-1/assets/css/contact-1.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!--Advanced multiselect esasy-->
+<script src="https://www.jqueryscript.net/demo/advanced-multiselect-easy/easySelect.js"></script>
 
  <!-- Contact 1 - Bootstrap Brain Component -->
 
@@ -20,18 +24,14 @@
       
      
       <div class="col-12 col-lg-7">
-        <div class="card text-center" style="background-color: #1b3d70c2;">
-          <div class="card-header  text-center">
-          
-              <h5 class="text-white">Ingresar Muestras</h5>
-                   
-           </div>
-         </div>
+        <div class="shadow-sm overflow-hidden rounded " style="background-color: #1b3d70c2; ">
+          <h5 class="text-white text-center  "><br>Ingresar Muestras</h5>
+     </div>
         <div class="bg-white border rounded shadow-sm overflow-hidden">
 
           <form action="" id="myModelForm" method="POST">    {% csrf_token %}
           
-            <div class="row gy-4 gy-xl-2 p-4 p-xl-5">
+            <div class="row gy-4 gy-xl-1 p-4 p-xl-4">
               <div class="col-12">
                 {{ form.nombre_muestra|as_crispy_field  }}
               </div>
@@ -78,7 +78,12 @@
 </section>
 
 <!-- Margen Final -->
-
+<script>
+   $("#id_etapa").select2({
+theme: "bootstrap-5",
+placeholder: "Seleccione",
+});
+</script>
 <!-- Validación de campos -->
 <script>
   function confirmar(event) { 

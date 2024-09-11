@@ -209,6 +209,8 @@ def chart_js_proceso_secuencias_en_curso(request):
    chart1 = {
         'chart': {'type': 'pie'},
         'title': {'text': ''},
+         "credits": "false",
+
         'series': [{
             'data': [{
             'y': pendiente_validación,
@@ -270,6 +272,8 @@ def chart_js_proceso_secuencias_en_curso(request):
 
    chart = {
         'chart': {'type': 'column' },
+        "credits": "false",
+
         'title': {'text': ''},
         'xAxis': {'categories': categories},
         'series': [registrada_series, validada_series, impresa_series]

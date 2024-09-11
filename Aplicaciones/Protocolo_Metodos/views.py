@@ -559,7 +559,7 @@ def ingresar_muestras(request):
             messages.success(request, "Registro creado satisfactoriamente")
             return redirect("muestras")
         else:
-             messages.error(request, "por favor, revise los datos ingresados") 
+             messages.error(request, "Por favor revisa los datos ingresados; quizas le falta diligenciar un campo o los campos Lote y Etapa, coinciden con otro registro") 
     else:
         form = ingresar_muestrasForm() 
     context={
@@ -584,7 +584,7 @@ def editar_muestras(request, pk):
            messages.success(request, "Registro editado correctamente")
            return redirect("muestras")
          else:
-           messages.error(request, "Por favor revisa los datos ingresados")  
+           messages.error(request, "Por favor revisa los datos ingresados; quizas le falta diligenciar un campo o los campos Lote y Etapa, coinciden con otro registro")  
     else:
           form = ingresar_muestrasForm(instance=muestra)
     context={
@@ -595,6 +595,32 @@ def editar_muestras(request, pk):
    
 }
     return render(request, "protocolo_metodos/editar_muestras.html", context)
+
+@login_required
+def duplicar_muestras(request, pk):
+    titulo="Duplicar Muestras"
+    muestra=Muestras_y_Placebos.objects.get(id=pk)
+    muestras=Muestras_y_Placebos.objects.all()
+
+    if request.method == "POST":
+         form = ingresar_muestrasForm(request.POST)
+         #messages.success(request, "Editada con exito")
+         if form.is_valid():
+           form.save()
+           messages.success(request, "Registro creado correctamente")
+           return redirect("muestras")
+         else:
+           messages.error(request, "Por favor revisa los datos ingresados; quizas le falta diligenciar un campo o los campos Lote y Etapa, coinciden con otro registro")  
+    else:
+          form = ingresar_muestrasForm(instance=muestra)
+    context={
+    "titulo":titulo,
+    "form":form,
+    "protocolo_metodo": muestra,
+    "protocolo_metodos":muestras,
+   
+}
+    return render(request, "protocolo_metodos/duplicar_muestras.html", context)
 
 @login_required
 def sistemas(request):
