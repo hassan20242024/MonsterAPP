@@ -37,7 +37,7 @@
                 </thead>
                 <tbody id="myTable">
                     {% for item in secuenicas.all %}
-                    {% if item.status == "Revisada" or item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" %}
+                    {% if item.status == "Revisada" or item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" or item.status == "Ensayo" %}
                     <tr class="text-center">
                         <td class="all text-center" style="display: None;" >{{item.fecha_Inicio|date:'Y-m-d H:i'}}</td>
                         <td>{{item.nombre}} &nbsp; <a href="" title="Revisar secuencia" class="text-black text-center"  data-bs-target="#observacion_secuencia{{ item.pk }}" data-bs-toggle="modal"><span class="fa fa-camera-retro" ></span></a>
@@ -67,6 +67,7 @@
                           {% if item.status == "Impresa" %} <div class="badge bg-warning  rounded-pill">Impresa</div>{% endif %}
                           {% if item.status == "Reportada" %} <div class="badge bg-success text-white rounded-pill">Reportada</div>{% endif %}
                           {% if item.status == "Auditada" %} <div class="badge bg-primary text-white rounded-pill">Auditada</div>{% endif %}
+                          {% if item.status == "Ensayo" %} <div class="badge bg-info text-dark rounded-pill">Ensayo</div>{% endif %}
                          
                         </td>
                         <td>
@@ -548,32 +549,36 @@
                       <b>Estado </b> <a class="float-right badge bg-danger text-white rounded-pill">Pendiente</a>
                       {% endif %} 
                       {% if item.status == "Impresa" %}
-                      <b>Estado</b> <a class="float-right badge bg-warning  rounded-pill">{{item.status}}</a>
+                      <b>Estado</b> <a href="{% url 'cambiar_estado_ensayo' item.pk %}" class="float-right badge bg-warning  rounded-pill">{{item.status}}</a>
                       {% endif %} 
                       {% if item.status == "Reportada" %}
-                      <b>Estado</b> <a class="float-right badge bg-success text-white rounded-pill">{{item.status}}</a> 
+                      <b>Estado</b> <a href="{% url 'cambiar_estado_ensayo' item.pk %}" class="float-right badge bg-success text-white rounded-pill">{{item.status}}</a> 
                       {% endif %} 
                       {% if item.status == "Auditada" %}
                       <b>Estado</b> <a class="float-right badge bg-primary text-white rounded-pill">{{item.status}}</a> 
+                      {% endif %} 
+                      {% if item.status == "Ensayo" %}
+                      <b>Estado</b> <a class="float-right badge bg-info text-dark rounded-pill">{{item.status}}</a> 
                       {% endif %}  
                       </li>
-                      {% if item.status == "Revisada" or item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" %}
+                      {% if item.status == "Revisada" or item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" or item.status == "Ensayo" %}
                       <li class="list-group-item">
                         <b>Validada por/fecha</b> <a class="float-right">{{item.validar}}/{{item.fecha_validar}}</a>
                         {% endif %}
                         </li>
-                      {% if item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" %}
+                      {% if item.status == "Impresa" or item.status == "Reportada" or item.status == "Auditada" or item.status == "Ensayo" %}
                       <li class="list-group-item">
                         <b>Impresa por/fecha</b> <a class="float-right">{{item.imprimir}}/{{item.fecha_impresion}}</a>
                         {% endif %}
                         </li>
-                        {% if item.status == "Reportada" or item.status == "Auditada" %} 
+                        {% if item.status == "Reportada" or item.status == "Auditada" or item.status == "Ensayo" %} 
                         <li class="list-group-item">
+                          {% if item.reportar.id >= 1 %}
                           <b>Reportada por/fecha</b> <a class="float-right">{{item.reportar}}/{{item.fecha_reporte}}</a>
                           <li class="list-group-item">
                             <b>Referencia del reporte</b> <a class="float-right">{{item.referencia}}</a>
                           </li>
-                          {% endif %}
+                          {% endif %} {% endif %}
                           {% if item.status  == "Auditada" %}
                           <li class="list-group-item">
                             <b>Auditada por/fecha</b> <a class="float-right">{{item.auditar}}/{{item.fecha_auditada}}</a>
@@ -587,7 +592,7 @@
                                <a class="float-right">{{item.observaciones}}</a>
                                                             </li> 
                 </div>
-                <!---->
+                <!------>
 
             
                          <div class="card">

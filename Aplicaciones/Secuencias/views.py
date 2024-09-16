@@ -765,8 +765,6 @@ def actualizar_secuencias_validadas(request, pk):
         "titulo":titulo,
         "form":form,
         
-        
-        
         "protocolos":protocolos,
         "parametros":parametros,
          "ensayo":ensayo,
@@ -774,5 +772,45 @@ def actualizar_secuencias_validadas(request, pk):
          "secuencia":secuencia,
     }
    return render(request, "secuencias/actualizar_secuencias_validadas.html", context)
+
+def cambiar_estado_ensayo(request, pk):
+   titulo="Crear Secuencias"
+  
+   secuencia=Secuencias.objects.get(id=pk)
+   protocolos=Protocolos.objects.all()
+   parametros=Parametro.objects.all()
+   sistema=Sistema.objects.all()
+    
+
+   ensayo=Ensayo.objects.all()
+
+   
+   if request.method == "POST":
+        form = secuenciasForm(request.POST, instance=secuencia)
+       
+        if form.is_valid():
+            form.save()
+            Secuencias.objects.filter(id=pk).update(
+        status="Ensayo", )
+            messages.success(request, "La secuencia ha sido actualizada")
+           
+            return redirect("proceso_secuencias_en_curso")
+        else:
+             messages.error(request, "Por favor revisa los datos ingresados")
+             return redirect("crear_secuencias_en_curso")    
+   else:
+        form = secuenciasForm(instance=secuencia) 
+        
+   context={
+        "titulo":titulo,
+        "form":form,
+        
+        "protocolos":protocolos,
+        "parametros":parametros,
+         "ensayo":ensayo,
+         "sistema":sistema,
+         "secuencia":secuencia,
+    }
+   return render(request, "secuencias/cambiar_estado_ensayo.html", context)
 
 

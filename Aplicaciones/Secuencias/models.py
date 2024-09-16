@@ -68,7 +68,7 @@ class usuario_auditor(models.Model):
         return self.usuario.username         
     
 
-
+#
 
 class Secuencias(models.Model):
     #order_number = models.IntegerField(primary_key=False, blank=True, null=True, default=0 )

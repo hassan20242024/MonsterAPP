@@ -7,6 +7,7 @@ urlpatterns=[
     path("crear_secuencias/",views.crear_secuencias, name="crear_secuencias"),
     path("editar_secuencias/<int:pk>/", views.editar_secuencias, name="editar_secuencias"),
     path("actualizar_secuencias_validadas/<int:pk>/", views.actualizar_secuencias_validadas,name="actualizar_secuencias_validadas"),
+    path("cambiar_estado_ensayo/<int:pk>/", views.cambiar_estado_ensayo,name="cambiar_estado_ensayo"),
     #path("actualizar_secuencias_impresas/<int:pk>/", views.actualizar_secuencias_impresas, name="actualizar_secuencias_impresas"),
     #path("actualizar_secuencias_reportadas/<int:pk>/", views.actualizar_secuencias_reportadas, name="actualizar_secuencias_reportadas"),
     path("actualizarEstadoParametros/<int:pk>/", views.actualizarEstadoParametros, name="actualizarEstadoParametros"),
