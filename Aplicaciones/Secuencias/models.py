@@ -88,6 +88,7 @@ class Secuencias(models.Model):
         IMPRESA = "Impresa", "IMPRESA"
         REPORTADA = "Reportada", "REPORTADA"
         AUDITADA = "Auditada", "AUDITADA"
+        ENSAYO = "Ensayo", "ENSAYO"
     status=models.CharField(max_length=90, choices=Status.choices, default=Status.REGISTRADA, verbose_name="Status", null=True, blank=True)  
     class Condicion(models.TextChoices):
         ACTIVO = "Activo", "ACTIVO"
