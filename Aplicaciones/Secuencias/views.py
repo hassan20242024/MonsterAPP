@@ -213,27 +213,30 @@ def chart_js_proceso_secuencias_en_curso(request):
             'data': [{
             'y': pendiente_validación,
             'name': "Adquiriendo",
-            'color': ' #a92bb0',
+            'color': "#FF6384",
             
             
         }, {
             'y': pendiente_impresion,
             'name': "Impresiones pendientes",
-            'color': "#1fadc5"
+            'color':  "#63FF84", 
         },{
          'y': pendiente_reporte,
             'name': "Reportes pendientes",
-            'color': "#2e51a2"    
+            'color': "#8463FF",
+              
         }, {
          'y': pendientes_auditoria,
             'name': "Pendientes por auditar",
-            'color': "#d4b958"    
+            'color': "#6384FF" 
+               
         }
         ]
         }]
     }
+   
    chart1A = {
-        'chart': {'type': 'bar'},
+        'chart': {'type': 'column'},
         'title': {'text': ''},
          "credits": "false",
 
@@ -241,21 +244,21 @@ def chart_js_proceso_secuencias_en_curso(request):
             'data': [{
             'y': pendiente_validación,
             'name': "Adquiriendo",
-            'color': ' #a92bb0',
+            'color': "#FF6384",
             
             
         }, {
             'y': pendiente_impresion,
             'name': "Impresiones pendientes",
-            'color': "#1fadc5"
+            'color':  "#63FF84",
         },{
          'y': pendiente_reporte,
             'name': "Reportes pendientes",
-            'color': "#2e51a2"    
+            'color':"#8463FF",    
         }, {
          'y': pendientes_auditoria,
             'name': "Pendientes por auditar",
-            'color': "#d4b958"    
+            'color': "#6384FF"    
         }
         ]
         }]
@@ -283,20 +286,20 @@ def chart_js_proceso_secuencias_en_curso(request):
    registrada_series = {
         'name': 'Adquiriendo',
         'data': registrada,
-        'color': '#a92bb0',
+        'color': "#FF6384",
         
     }
 
    validada_series = {
         'name': 'Impresiones pendientes',
         'data': validada,
-        'color': '#1fadc5'
+        'color': "#63FF84",
     }
    
    impresa_series = {
         'name': 'Reportes pendientes',
         'data': impresa,
-        'color': '#2e51a2'
+        'color': "#8463FF",
     }
 
 
