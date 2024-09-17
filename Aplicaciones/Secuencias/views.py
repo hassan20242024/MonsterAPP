@@ -22,7 +22,6 @@ from django.utils import formats
 
 
 @login_required
-
 def crear_secuencias(request):
     titulo="Crear Secuencias"
     secuenicas=Secuencias.objects.all()
@@ -57,6 +56,7 @@ def crear_secuencias(request):
     }
     
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
 @login_required
 def crear_secuencias_en_curso(request):
     #titulo="Crear Secuencias"
@@ -75,12 +75,6 @@ def crear_secuencias_en_curso(request):
     validar=usuario_validar.objects.filter(usuario=request.user)
     protocolos_proceso=Proceso.objects.all()
     muestras=Muestras_y_Placebos.objects.all()
-    
-   
-   
-    #protocolos_id = request.GET.get('protocolo')
-    #parametro_dependiente = Parametro.objects.filter(nombre_parametro=protocolos_id).order_by('nombre_parametro')
-
 
     sist=Sistema.objects.filter(id=1)
    
@@ -118,6 +112,7 @@ def crear_secuencias_en_curso(request):
          #"parametro_dependiente":parametro_dependiente,
     }
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
 @login_required
 def proceso_secuencias_en_curso(request):
     secuenicas=Secuencias.objects.all()
@@ -179,7 +174,7 @@ def secuencias_invalidas(request):
     }
     return render(request, "secuencias/secuencias_invalidas.html", context)
 
-@login_required
+
 #def chart_js_proceso_secuencias_en_curso(request):
   
     #impresiones_UHPLC_TS_6 = Secuencias.objects.order_by("-sistema").values("sistema").filter(status="Impresa", sistema=1).count()
@@ -202,6 +197,7 @@ def chart_js_proceso_secuencias_en_curso(request):
    pendientes_reportes = Secuencias.objects.filter(status="Impresa").count()
    pendientes_auditorias = Secuencias.objects.filter(status="Reportada").count()
    invalidas = Secuencias.objects.filter(status="Invalida").count()
+   ensayos = Secuencias.objects.filter(status="Ensayo").count()
 
 
    pendiente_validación = Secuencias.objects.filter(status="Registrada").count()
@@ -317,7 +313,7 @@ def chart_js_proceso_secuencias_en_curso(request):
     
    return render(request, 'secuencias/chart_js__proceso_secuencias_en_curso.html', {'chart': dump, "chart1":chart1,"chart1A":chart1A,
     "registro_total":registro_total, "pendientes_validaciones":pendientes_validaciones,"pendientes_impresiones":pendientes_impresiones,
-    "pendientes_reportes":pendientes_reportes, "invalidas":invalidas})
+    "pendientes_reportes":pendientes_reportes, "invalidas":invalidas, "pendientes_auditorias":pendientes_auditorias, "ensayos":ensayos})
 
 
 @login_required
@@ -360,6 +356,7 @@ def editar_secuencias_en_curso(request, pk):
          "secuencia":secuencia,
     }
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
 @login_required
 def duplicar_secuencias(request, pk):
     titulo="Crear Secuencias"
@@ -440,8 +437,6 @@ def duplicar_secuencias_muestras(request, pk):
     }
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
 
-
-
 @login_required
 def invalidar_prueba(request, pk):
     titulo="Crear Secuencias"
@@ -485,6 +480,7 @@ def invalidar_prueba(request, pk):
          "secuencia":secuencia,
     }
     return render(request, "secuencias/crear_secuencias_en_curso.html", context)
+
 @login_required
 def invalidar_secuencias(request, pk):
    
@@ -558,9 +554,6 @@ def validar_secuencias(request, pk):
     if date < date1:
         raise ValidationError(self.error_messages['Date cannot be in the past'], code='Date cannot be in the past') 
        
-   
-
-   
    if request.method == "POST":
 
      
@@ -584,10 +577,6 @@ def validar_secuencias(request, pk):
    def clean_date(self):
        fecha_Final=Secuencias.objects.filter("fecha_Final")
        
-    
-         
-   
-       
    context={
         "titulo":titulo,
         "form":form,
@@ -605,20 +594,16 @@ def validar_secuencias(request, pk):
 
     }
   
-   
    return render(request, "secuencias/crear_secuencias_en_curso.html", context)
 
 @login_required
-
 def editar_secuencias(request, pk):
     titulo="Editar Secuencias"
     protocolos=Protocolos.objects.all()
     parametros=Parametro.objects.all()
     ensayo=Ensayo.objects.all()
     secuencias1=Secuencias.objects.filter(pk=pk)
-    
-    
-        
+   
     context={
         "titulo":titulo,
         "protocolos":protocolos,
@@ -628,6 +613,7 @@ def editar_secuencias(request, pk):
     }
     return render(request, "secuencias/editarSecuencias.html", context)
 
+@login_required
 def actualizarEstadoParametros(request, pk):
    
     secuencias1=Secuencias.objects.filter(id=pk)
@@ -641,6 +627,7 @@ def actualizarEstadoParametros(request, pk):
                 status_parametro="Revisado"
             )
     return redirect("secuencias") 
+
 @login_required
 def impresion_secuencia(request, pk):
    titulo="Crear Secuencias"
@@ -683,6 +670,7 @@ def impresion_secuencia(request, pk):
          "secuencia":secuencia,
     }
    return render(request, "secuencias/proceso_secuencias_en_curso.html", context)
+
 @login_required
 def reporte_secuencias(request, pk):
    titulo="Crear Secuencias"
@@ -695,7 +683,6 @@ def reporte_secuencias(request, pk):
    if request.method == "POST":
         secuencia=Secuencias.objects.get(id=pk)
 
-        
         form = secuenciasForm(request.POST, instance=secuencia)
         if form.is_valid():
            #form.save()
@@ -737,7 +724,6 @@ def auditar_secuencias(request, pk):
    if request.method == "POST":
         secuencia=Secuencias.objects.get(id=pk)
 
-        
         form = secuenciasForm(request.POST, instance=secuencia)
         if form.is_valid():
            #form.save()
@@ -767,7 +753,6 @@ def auditar_secuencias(request, pk):
     }
    return render(request, "secuencias/proceso_secuencias_en_curso.html", context)
 
-
 @login_required
 def actualizar_secuencias_validadas(request, pk):
    titulo="Crear Secuencias"
@@ -776,11 +761,8 @@ def actualizar_secuencias_validadas(request, pk):
    protocolos=Protocolos.objects.all()
    parametros=Parametro.objects.all()
    sistema=Sistema.objects.all()
-    
-
    ensayo=Ensayo.objects.all()
 
-   
    if request.method == "POST":
         form = secuenciasForm(request.POST, instance=secuencia)
        
@@ -807,6 +789,7 @@ def actualizar_secuencias_validadas(request, pk):
     }
    return render(request, "secuencias/actualizar_secuencias_validadas.html", context)
 
+@login_required
 def cambiar_estado_ensayo(request, pk):
    titulo="Crear Secuencias"
   
@@ -814,11 +797,8 @@ def cambiar_estado_ensayo(request, pk):
    protocolos=Protocolos.objects.all()
    parametros=Parametro.objects.all()
    sistema=Sistema.objects.all()
-    
-
    ensayo=Ensayo.objects.all()
 
-   
    if request.method == "POST":
         form = secuenciasForm(request.POST, instance=secuencia)
        

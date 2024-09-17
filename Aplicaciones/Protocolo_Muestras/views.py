@@ -52,8 +52,6 @@ def crear_protocolo_proceso(request):
 @login_required
 def editar_protocolo_proceso(request, pk):
 
-
-
     titulo="Editar Protocolos"
     protocolo_proceso=Proceso.objects.get(id=pk)
     protocolo_proceso_iterar=Proceso.objects.all()
@@ -100,8 +98,6 @@ def revisar_protocolo_proceso(request, pk):
     porcentajeStatusImpresa=contarStatusImpresa*60/contarParametroProtocolo
     porcentajeStatusReportada=contarStatusReportada*80.0/contarParametroProtocolo
     porcentajeStatusAuditada=contarStatusAuditada*100/contarParametroProtocolo
-   
-  
 
     labels = []
     data = []

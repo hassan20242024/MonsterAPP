@@ -26,8 +26,6 @@ def protocolo_metodos(request):
     }
     return render(request, "protocolo_metodos/protocolo_metodos.html", context)
 
-
-
 @login_required
 def crear_protocolo_metodos(request):
     titulo="Crear Protocolos"
@@ -58,8 +56,6 @@ def crear_protocolo_metodos(request):
     }
     return render(request, "protocolo_metodos/crear_protocolo_metodos.html", context)
 
-
-
 @login_required
 def configuracion_protocolo_metodos(request):
     titulo = "Ajustes Protocolo de Métodos/Parámetros"
@@ -85,15 +81,11 @@ def configuracion_protocolo_metodos(request):
        "tituloParametro":tituloParametro,
        "nombreSubparametro":nombreSubparametro
     }
-    
    
     return render(request, "protocolo_metodos/configuracion_protocolo_metodos.html", context)
 
 @login_required
 def editar_protocolo_metodos(request, pk):
-
-
-
     titulo="Editar Protocolos"
     protocolo_metodo=Protocolos.objects.get(id=pk)
     protocolo_metodos=Protocolos.objects.all()
@@ -141,11 +133,8 @@ def revisar_protocolo_metodos(request, pk):
     porcentajeStatusReportada=contarStatusReportada*80.0/contarParametroProtocolo
     porcentajeStatusAuditada=contarStatusAuditada*100/contarParametroProtocolo
    
-  
-
     labels = []
     data = []
-
     queryset = Secuencias.objects.order_by('-nombre')[:5]
     for city in queryset:
         labels.append(city.nombre)
@@ -175,7 +164,6 @@ def revisar_protocolo_metodos(request, pk):
     "porcentajeStatusReportada":porcentajeStatusReportada,
     "porcentajeStatusAuditada":porcentajeStatusAuditada,
    
-
 }
     return render(request, "protocolo_metodos/revisar_protocolo_metodos.html", context)
 
