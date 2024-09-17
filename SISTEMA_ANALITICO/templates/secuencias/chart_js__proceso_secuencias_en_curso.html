@@ -96,17 +96,28 @@
         </div><!-- end card -->
     </div>
    <div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-gradient-primary">
-                <h1 class="card-title">Estado de secuencias </h1>
-            </div>
-            <div id="containers" >
-                
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-gradient-primary">
+                    <h1 class="card-title">Estado general de secuencias </h1>
+                </div>
+                <div id="containersA" >
+                </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-gradient-primary">
+                    <h1 class="card-title">Estado general secuencias </h1>
+                </div>
+                <div id="containers" >
+                </div>
+            </div>
 
-    </div>
+        </div>
+     
+
+</div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-gradient-primary">
@@ -122,7 +133,7 @@
     
 
    </div>
-     </div>
+    
 
 
 
@@ -138,8 +149,11 @@
     Highcharts.chart('container', {{ chart|safe }});
   </script>
   <script type="">
-      Highcharts.chart('containers', {{ chart1|safe }});
+      Highcharts.chart('containersA', {{ chart1A|safe }});
       </script>
+      <script type="">
+        Highcharts.chart('containers', {{ chart1|safe }});
+        </script>
 <!--Graficos-->
 
 

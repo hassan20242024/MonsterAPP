@@ -200,12 +200,14 @@ def chart_js_proceso_secuencias_en_curso(request):
    pendientes_validaciones = Secuencias.objects.filter(status="Registrada").count()
    pendientes_impresiones = Secuencias.objects.filter(status="Revisada").count()
    pendientes_reportes = Secuencias.objects.filter(status="Impresa").count()
+   pendientes_auditorias = Secuencias.objects.filter(status="Reportada").count()
    invalidas = Secuencias.objects.filter(status="Invalida").count()
 
 
    pendiente_validación = Secuencias.objects.filter(status="Registrada").count()
    pendiente_impresion = Secuencias.objects.filter(status="Revisada").count()
    pendiente_reporte = Secuencias.objects.filter(status="Impresa").count()
+   pendientes_auditoria = Secuencias.objects.filter(status="Reportada").count()
    chart1 = {
         'chart': {'type': 'pie'},
         'title': {'text': ''},
@@ -226,6 +228,38 @@ def chart_js_proceso_secuencias_en_curso(request):
          'y': pendiente_reporte,
             'name': "Reportes pendientes",
             'color': "#2e51a2"    
+        }, {
+         'y': pendientes_auditoria,
+            'name': "Pendientes por auditar",
+            'color': "#d4b958"    
+        }
+        ]
+        }]
+    }
+   chart1A = {
+        'chart': {'type': 'bar'},
+        'title': {'text': ''},
+         "credits": "false",
+
+        'series': [{
+            'data': [{
+            'y': pendiente_validación,
+            'name': "Adquiriendo",
+            'color': ' #a92bb0',
+            
+            
+        }, {
+            'y': pendiente_impresion,
+            'name': "Impresiones pendientes",
+            'color': "#1fadc5"
+        },{
+         'y': pendiente_reporte,
+            'name': "Reportes pendientes",
+            'color': "#2e51a2"    
+        }, {
+         'y': pendientes_auditoria,
+            'name': "Pendientes por auditar",
+            'color': "#d4b958"    
         }
         ]
         }]
@@ -281,7 +315,7 @@ def chart_js_proceso_secuencias_en_curso(request):
 
    dump = json.dumps(chart)
     
-   return render(request, 'secuencias/chart_js__proceso_secuencias_en_curso.html', {'chart': dump, "chart1":chart1,
+   return render(request, 'secuencias/chart_js__proceso_secuencias_en_curso.html', {'chart': dump, "chart1":chart1,"chart1A":chart1A,
     "registro_total":registro_total, "pendientes_validaciones":pendientes_validaciones,"pendientes_impresiones":pendientes_impresiones,
     "pendientes_reportes":pendientes_reportes, "invalidas":invalidas})
 
