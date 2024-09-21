@@ -335,13 +335,7 @@ def chart_js_proceso_secuencias_en_curso(request):
         'title': {'text': ''},
         'xAxis': {'categories': categories},
         'series': [registrada_series, validada_series, impresa_series],
-         "plotOptions": {
-		"column": {
-			"pointPadding": 0,
-			"borderWidth": 23
-		}
-	},
-        
+         
     }
 
    dump = json.dumps(chart)
