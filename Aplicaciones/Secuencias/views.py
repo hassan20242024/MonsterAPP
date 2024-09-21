@@ -198,7 +198,11 @@ def chart_js_proceso_secuencias_en_curso(request):
    pendientes_auditorias = Secuencias.objects.filter(status="Reportada").count()
    invalidas = Secuencias.objects.filter(status="Invalida").count()
    ensayos = Secuencias.objects.filter(status="Ensayo").count()
-
+   total_grafico_pie_secuencias=pendientes_validaciones+pendientes_impresiones+pendientes_reportes+pendientes_auditorias
+   procentaje_pendientes_validaciones=pendientes_validaciones*100/total_grafico_pie_secuencias
+   procentaje_pendientes_impresiones=pendientes_impresiones*100/total_grafico_pie_secuencias
+   procentaje_pendientes_reportes=pendientes_reportes*100/total_grafico_pie_secuencias
+   procentaje_pendientes_auditorias=pendientes_auditorias*100/total_grafico_pie_secuencias
 
    pendiente_validación = Secuencias.objects.filter(status="Registrada").count()
    pendiente_impresion = Secuencias.objects.filter(status="Revisada").count()
@@ -207,27 +211,38 @@ def chart_js_proceso_secuencias_en_curso(request):
    chart1 = {
         'chart': {'type': 'pie'},
         'title': {'text': ''},
+         
+     
          "credits": "false",
+         
+               "plotOptions": {
+		"pie": {
+			"pointPadding": 0,
+			"borderWidth": 8,
+            
+		}
+	},
 
         'series': [{
+             "name": "Status",
             'data': [{
             'y': pendiente_validación,
-            'name': "Adquiriendo",
+            'name':  '%s°/° Adquiriendo'% int(procentaje_pendientes_validaciones),
             'color': "#FF6384",
             
             
         }, {
             'y': pendiente_impresion,
-            'name': "Impresiones pendientes",
+            'name':  '%s°/° Impresiones pendientes'  %int(procentaje_pendientes_impresiones),
             'color':  "#63FF84", 
         },{
          'y': pendiente_reporte,
-            'name': "Reportes pendientes",
+            'name':  '%s°/° Reportes pendientes'  %int(procentaje_pendientes_reportes),
             'color': "#8463FF",
               
         }, {
          'y': pendientes_auditoria,
-            'name': "Pendientes por auditar",
+            'name':  '%s°/° Pendientes por auditar'  %int(procentaje_pendientes_auditorias),
             'color': "#6384FF" 
                
         }
@@ -239,13 +254,23 @@ def chart_js_proceso_secuencias_en_curso(request):
         'chart': {'type': 'column'},
         'title': {'text': ''},
          "credits": "false",
-
+          "xAxis": {
+            "categories": ['Adquiriendo', 'Impresiones pendientes', 'Reportes pendientes', 'Pendientes por auditar']
+        },
+         "plotOptions": {
+		"column": {
+			"pointPadding": 0.2,
+			"borderWidth": 15,
+               #"borderColor": "#417690",
+		}
+	},
+    
         'series': [{
+            "name": "Status",
             'data': [{
             'y': pendiente_validación,
             'name': "Adquiriendo",
             'color': "#FF6384",
-            
             
         }, {
             'y': pendiente_impresion,
@@ -284,7 +309,7 @@ def chart_js_proceso_secuencias_en_curso(request):
         
 
    registrada_series = {
-        'name': 'Adquiriendo',
+        'name': ' Adquiriendo',
         'data': registrada,
         'color': "#FF6384",
         
@@ -309,7 +334,14 @@ def chart_js_proceso_secuencias_en_curso(request):
 
         'title': {'text': ''},
         'xAxis': {'categories': categories},
-        'series': [registrada_series, validada_series, impresa_series]
+        'series': [registrada_series, validada_series, impresa_series],
+         "plotOptions": {
+		"column": {
+			"pointPadding": 0,
+			"borderWidth": 23
+		}
+	},
+        
     }
 
    dump = json.dumps(chart)

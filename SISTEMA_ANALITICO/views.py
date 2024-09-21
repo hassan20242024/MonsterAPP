@@ -80,39 +80,41 @@ def adm_inicio(request):
      #dump1 = json.dumps(chart1)
 
      dataset_motivo = Protocolos.objects.values("estado_protocolo__estado_motivo").annotate(
-         Listado=Count("estado_protocolo", filter=Q(estado_protocolo="5")),
-         finalizado=Count("estado_protocolo", filter=Q(estado_protocolo="6")),
-         falta_insumos=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="2")),
-         metodologia=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="3")),
-         criterio=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="4")),
-         ejecucion=Count("estado_protocolo", filter=Q(estado_protocolo="1"))
-     )
+          ejecucion=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="1")),
+            falta_insumos=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="2")),
+             metodologia=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="3")),
+                 criterio=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="4")),
+         Listado=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="5")),
+         finalizado=Count("estado_protocolo__estado_motivo", filter=Q(estado_protocolo="6")),
+       
+        
+     
+        
+     ).exclude(estado_protocolo="7")
      categories = []
-     Listado = list()
-     finalizado = list()
+     ejecucion = list()
      falta_insumos = list()
      metodologia = list()
+       
      criterio = list()
-     ejecucion = list()
+     Listado = list()
+     finalizado = list()
+ 
+   
      for entry in dataset_motivo:
          categories.append('%s ' % entry['estado_protocolo__estado_motivo'])
-         Listado.append(entry['Listado'])
-         finalizado.append(entry['finalizado'])
+         ejecucion.append(entry['ejecucion'])
          falta_insumos.append(entry['falta_insumos'])
          metodologia.append(entry['metodologia'])
          criterio.append(entry['criterio'])
-         ejecucion.append(entry['ejecucion'])
-     listadoseries = {
-        'name': 'Listado',
-        'data': Listado,
-        'color': '#08ee97', 
-   } 
-     finalizado_series = {
-        'name': 'Finalizado',
-        'data': finalizado,
-        'color': '#0855ee', 
-   } 
-
+         Listado.append(entry['Listado'])
+         finalizado.append(entry['finalizado'])
+        
+     ejecucion_series = {
+        'name': 'En ejecución',
+        'data': ejecucion,
+        'color': '#db08ee',
+    }
      falta_insumos_series = {
         'name': 'Falta de insumos',
         'data': falta_insumos,
@@ -127,18 +129,34 @@ def adm_inicio(request):
         'name': 'Muestras no cumplen parámetros',
         'data': criterio,
         'color': '#ff0d0d',
-    } 
-     ejecucion_series = {
-        'name': 'En ejecución',
-        'data': ejecucion,
-        'color': '#db08ee',
-    } 
+    }      
+     listadoseries = {
+        'name': 'Listado',
+        'data': Listado,
+        'color': '#08ee97', 
+   } 
+     finalizado_series = {
+        'name': 'Finalizado',
+        'data': finalizado,
+        'color': '#0855ee', 
+   } 
+
+    
+    
      chart2 = {
-        'chart': {'type': 'bar'},
+        'chart': {'type': 'column'},
         'title': {'text': ''},
          "credits": "false",
+         
         'xAxis': {'categories': categories},
-        'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series]
+        'series': [ejecucion_series,falta_insumos_series,metodologia_series,criterio_series,   listadoseries,finalizado_series,],
+          "plotOptions": {
+		"column": {
+			
+			"pointPadding": -1.9,
+			"borderWidth": 10
+		}
+	},
     } 
     
      dump2 = json.dumps(chart2)   
@@ -152,7 +170,7 @@ def adm_inicio(request):
          metodologia=Count("estado_del_proceso__estado_motivo", filter=Q(estado_del_proceso="3")),
          criterio=Count("estado_del_proceso__estado_motivo", filter=Q(estado_del_proceso="4")),
          ejecucion=Count("estado_del_proceso", filter=Q(estado_del_proceso="1"))
-     )
+     ).exclude(estado_del_proceso="7")
      categories = []
      Listado = list()
      finalizado = list()
@@ -200,11 +218,19 @@ def adm_inicio(request):
         'color': '#db08ee',
     } 
      chart3 = {
-        'chart': {'type': 'bar'},
+        'chart': {'type': 'column'},
         'title': {'text': ''},
          "credits": "false",
+        
         'xAxis': {'categories': categories},
-        'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series]
+        'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series],
+        "plotOptions": {
+		"column": {
+			
+			"pointPadding": -1.9,
+			"borderWidth": 10
+		}
+	},
     } 
      dump3 = json.dumps(chart3)   
      titulo="Tablero principal"
