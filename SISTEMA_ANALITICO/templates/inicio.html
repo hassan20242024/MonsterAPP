@@ -22,7 +22,9 @@
     <div class="row">
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box text-white" style="background-color: rgba(3, 168, 201, 0.992);">
+        <div class="small-box bg-gradient-info">
+          <!--         <div class="small-box bg-gradient-info" style="background-color: rgba(3, 168, 201, 0.992);">
+ -->
           <div class="inner">
             <h3>{{registro_total_protocolo_metodos_reales}}</h3>
 
@@ -37,7 +39,9 @@
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box text-white" style="background-color: rgba(4, 201, 168, 0.992);">
+         <!--         <div class="small-box text-white" style="background-color: rgba(4, 201, 168, 0.992);">
+ -->
+        <div class="small-box bg-gradient-success text-white">
           <div class="inner">
             <h3>{{registro_total_protocolo_proceso_reales}}</h3>
             <p>Protocolos de Proceso</p>
@@ -51,7 +55,9 @@
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box text-white" style="background-color: rgba(123, 2, 153, 0.697);">
+         <!--         <div class="small-box text-white" style="background-color: rgba(123, 2, 153, 0.697);">
+ -->
+        <div class="small-box bg-gradient-warning text-white" >
           <div class="inner">
             <h3>0<sup style="font-size: 20px"></sup></h3>
 
@@ -66,7 +72,9 @@
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box text-white" style="background-color: rgba(248, 69, 69, 0.94);">
+         <!--        <div class="small-box text-white" style="background-color: rgba(248, 69, 69, 0.94);">
+ -->
+        <div class="small-box bg-gradient-danger text-white">
           <div class="inner">
             <h3>0  
             </h3>
@@ -88,7 +96,7 @@
       <section class="col-lg-6 connectedSortable">
         <!-- Custom tabs (Charts with tabs)-->
         <div class="card">
-          <div class="card-header bg-gradient-info">
+          <div class="card-header">
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
               Protocolos de Métodos Finalizados
@@ -111,7 +119,7 @@
 
         <!-- solid sales graph -->
         <div class="card bg-gradient-white">
-          <div class="card-header bg-gradient-info">
+          <div class="card-header">
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
               Estado de Protocolos de Métodos
@@ -138,7 +146,7 @@
       <section class="col-lg-6 connectedSortable">
         <!-- Custom tabs (Charts with tabs)-->
         <div class="card">
-          <div class="card-header bg-gradient-info" >
+          <div class="card-header" >
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
               Protocolos de Proceso Finalizados
@@ -161,7 +169,7 @@
 
         <!-- solid sales graph -->
         <div class="card bg-gradient-white">
-          <div class="card-header bg-gradient-info">
+          <div class="card-header">
             <h3 class="card-title">
               <i class="fas fa-chart-pie mr-1"></i>
               Estado de Protocolos de Proceso
@@ -217,7 +225,7 @@ Highcharts.chart('container', {
       plotOptions: {
 		column: {
 			pointPadding: 0.2,
-			borderWidth: 8
+			borderWidth: 6
    
 		}
 	},
@@ -240,7 +248,7 @@ Highcharts.chart('container', {
           
           //backgroundColor: 'red'
           color: "#1088b1",
-          borderColor: "#befee8   ",
+          borderColor: "#d7e2e8   ",
       }, 
     ]
       
@@ -259,7 +267,7 @@ Highcharts.chart('container', {
         plotOptions: {
 		column: {
 			pointPadding: 0.2,
-			borderWidth: 8
+			borderWidth: 6
 		}
 	},
         title: {
@@ -279,9 +287,8 @@ Highcharts.chart('container', {
             ],
              //colorByPoint: 'true',
           showInLegen:"false",
-             color: "#5fc1a3",
-          borderColor: "#f1f7fa",
-            showInLegen:"false"
+          color: "#1088b1",
+          borderColor: "#d7e2e8   ",
         }, 
       ]
         

@@ -113,7 +113,8 @@ def adm_inicio(request):
      ejecucion_series = {
         'name': 'En ejecución',
         'data': ejecucion,
-        'color': '#db08ee',
+        'color': '#308034', 
+
     }
      falta_insumos_series = {
         'name': 'Falta de insumos',
@@ -123,7 +124,7 @@ def adm_inicio(request):
      metodologia_series = {
         'name': 'Problemas de método',
         'data': metodologia,
-        'color': '#ee5f08',
+        'color': '#fdbb30',
     } 
      criterio_series = {
         'name': 'Muestras no cumplen parámetros',
@@ -133,25 +134,26 @@ def adm_inicio(request):
      listadoseries = {
         'name': 'Listado',
         'data': Listado,
-        'color': '#08ee97', 
+        'color': '#a6a685',
    } 
      finalizado_series = {
         'name': 'Finalizado',
         'data': finalizado,
-        'color': '#0855ee', 
+        'color': '#1aa1c0',
    } 
 
     
     
      chart2 = {
-        'chart': {'type': 'column'},
+        'chart': {'type': 'bar'},
         'title': {'text': ''},
          "credits": "false",
+         
          
         'xAxis': {'categories': categories},
         'series': [ejecucion_series,falta_insumos_series,metodologia_series,criterio_series,   listadoseries,finalizado_series,],
           "plotOptions": {
-		"column": {
+		"bar": {
 			
 			"pointPadding": -1.9,
 			"borderWidth": 10
@@ -189,12 +191,12 @@ def adm_inicio(request):
      listadoseries = {
         'name': 'Listado',
         'data': Listado,
-        'color': '#08ee97', 
+        'color': '#a6a685',
    } 
      finalizado_series = {
         'name': 'Finalizado',
         'data': finalizado,
-        'color': '#0855ee', 
+        'color': '#1aa1c0',
    } 
 
      falta_insumos_series = {
@@ -205,27 +207,27 @@ def adm_inicio(request):
      metodologia_series = {
         'name': 'Problemas de método',
         'data': metodologia,
-        'color': '#ee5f08',
+        'color': '#fdbb30',
     } 
      criterio_series = {
         'name': 'Muestras no cumplen parámetros',
         'data': criterio,
-        'color': '#ff0d0d',
+        'color': '#f34235',
     } 
      ejecucion_series = {
         'name': 'En ejecución',
         'data': ejecucion,
-        'color': '#db08ee',
+        'color': '#308034', 
     } 
      chart3 = {
-        'chart': {'type': 'column'},
+        'chart': {'type': 'bar'},
         'title': {'text': ''},
          "credits": "false",
         
         'xAxis': {'categories': categories},
         'series': [falta_insumos_series,finalizado_series,metodologia_series,criterio_series,listadoseries,ejecucion_series],
         "plotOptions": {
-		"column": {
+		"bar": {
 			
 			"pointPadding": -1.9,
 			"borderWidth": 10
