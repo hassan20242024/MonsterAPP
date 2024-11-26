@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.forms.widgets import NumberInput
 from django.contrib.admin.widgets import AutocompleteSelect
 from django_select2 import forms as s2forms
-from .models import  Invalidar_Secuencia, Protocolos,Sistema,Parametro
+from .models import Protocolos,Sistema,Parametro,Lavado_buzo
 from django.core.exceptions import ValidationError
 from django.core import validators
 
@@ -16,11 +16,11 @@ from django.core import validators
 from .models import Secuencias
 
 class secuenciasForm(forms.ModelForm):
-    observaciones = forms.CharField(widget=forms.Textarea(attrs={'rows':8}), required=True)
-    invalidez = forms.ModelChoiceField(
+    observaciones = forms.CharField(widget=forms.Textarea(attrs={'rows':5}), required=True)
+    #invalidez = forms.ModelChoiceField(
     #empty_label= ("Seleccione el motivo"),
-    queryset=Invalidar_Secuencia.objects.all(),
-    required=False)
+    #queryset=Invalidar_Secuencia.objects.all(),
+    #required=False)
     #fecha_Inicio = forms.DateField(widget=forms.DateInput(format='%d.%B.%Y'),
         #input_formats=['%d.%B.%Y']
     #)
@@ -35,7 +35,7 @@ class secuenciasForm(forms.ModelForm):
     class Meta:
         model=Secuencias
         fields = '__all__'
-        exclude=["condicion"] 
+        #exclude=["condicion"] 
 
     #def clean_observaciones(self):
         #cleaned_data = super(secuenciasForm, self).clean()
@@ -46,5 +46,11 @@ class secuenciasForm(forms.ModelForm):
         
             #raise forms.ValidationError("PILAS")
         #return observaciones   
+class buzosForm(forms.ModelForm):
+    observaciones = forms.CharField(widget=forms.Textarea(attrs={'rows':8}), required=True)
+    class Meta:
+        model= Lavado_buzo
+        fields = '__all__'
+        exclude = ["condicion"]
 
 

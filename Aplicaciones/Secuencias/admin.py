@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import Secuencias, Sistema, Invalidar_Secuencia,usuario_invalidar,usuario_validar,usuario_impresion, usuario_reporte, usuario_auditor
+from .models import Secuencias, Sistema,usuario_invalidar,usuario_validar,usuario_impresion, usuario_reporte, usuario_auditor,Lavado_buzo
 
 
 # Register your models here.
@@ -21,19 +21,24 @@ class SistemaAdmin(admin.ModelAdmin):
     
     list_display = ["id", "nombre"]
 
-
+class MantenimientosAdmin(admin.ModelAdmin):
+    search_fields = ("id"),
+    ordering = ('-id',)
+    list_filter = ['id', 'fecha_lavado_buzo', 'fecha_lavado_celda', "fecha_test_diagnostico"]
+    list_display = ["id", "fecha_lavado_buzo", "fecha_lavado_celda", "fecha_test_diagnostico", "fecha_mantenimiento", "fecha_calificacion", "status", "status_celda","status_test","status_mantenimiento","status_calificacion"]
 
   
 
 admin.site.register(Secuencias,SecuenciasAdmin)
 admin.site.register(Sistema, SistemaAdmin)
-admin.site.register(Invalidar_Secuencia)
+#admin.site.register(Invalidar_Secuencia)
 admin.site.register(usuario_invalidar)
 admin.site.register(usuario_validar)
 admin.site.register(usuario_impresion)
 admin.site.register(usuario_reporte)
 admin.site.register(usuario_auditor)
 
+admin.site.register(Lavado_buzo, MantenimientosAdmin)
 
 
 

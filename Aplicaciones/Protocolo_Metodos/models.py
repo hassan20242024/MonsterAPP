@@ -45,16 +45,18 @@ class Metodo(models.Model):
     def __str__(self):    
 
         return(self.codigo_metodo)     
-    
+    #11
 class Etapa(models.Model):
-   
-    nombre_etapa=models.CharField(verbose_name="Etapa", max_length=90, unique=True)
+    nombre_etapa=models.CharField(verbose_name="Etapa", max_length=90)
     ensayo=models.ForeignKey(to=Ensayo, on_delete=models.CASCADE, verbose_name="Ensayo", null=True, blank=False)
     class Condicion(models.TextChoices):
         ACTIVO = "Activo", "ACTIVO"
         PASIVO = "Pasivo", "PASIVO"
     condicion=models.CharField(max_length=90, choices=Condicion.choices, default=Condicion.ACTIVO, verbose_name="Condicion")  
-   
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['nombre_etapa', 'ensayo'], name='etapa'),
+        ]
     def etapa(self):
         return "{} {}".format(self.nombre_etapa, self.ensayo)    
     def __str__(self):    
