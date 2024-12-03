@@ -92,7 +92,8 @@ INSTALLED_APPS = [
         #'site': 'contact_mail',
     #}
 #}
-
+ENABLE_ORYX_BUILD=True
+SCM_DO_BUILD_DURING_DEPLOYMENT=True
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
