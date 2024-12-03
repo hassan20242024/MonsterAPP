@@ -31,6 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"] #paraentorno de desarrollo
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+SCM_DO_BUILD_DURING_DEPLOYMENT= True # Para revision de deployment en azure
 
 
 # Application definition 
